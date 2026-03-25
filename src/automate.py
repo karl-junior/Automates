@@ -256,7 +256,7 @@ class Automate:
 
         
     def automate_epsilon(self):
-        for (i,j) in self.transitions :
+        for (i,j) in self.transitions:
             if j == "£":
                 return True
         return False
