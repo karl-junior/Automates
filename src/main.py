@@ -5,7 +5,7 @@ def menu_principal():
     while True:
         # --- 1. SÉLECTION ---
         print("\n" + "═"*50)
-        choix = input("Quel automate ? (1-44) ou 'q' : ")
+        choix = input("Quel automate voulez-vous consulter? (1-44) ou 'q' pour quitter : ")
 
         if choix.lower() == 'q': break
         nom_fichier = f"./tests/automate{choix}.txt"
@@ -23,7 +23,7 @@ def menu_principal():
             print("\n" + "─"*30)
             print(f"📍 ANALYSE DE L'AUTOMATE N°{choix} :")
             
-            # Diagnostic en temps réel
+            
             est_det = "OUI" if mon_automate.est_deterministe() else "NON"
             est_std = "OUI" if mon_automate.est_standard() else "NON"
             est_comp = "OUI" if mon_automate.est_complet() else "NON"
