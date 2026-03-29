@@ -346,16 +346,8 @@ class Automate:
     def automate_epsilon(self):
         return any(sym == "£" for (_, sym) in self.transitions.keys())
     
-
-    if __name__ == "__main__":
-        try:
-            from main import menu_principal
-            menu_principal()
-        except ImportError:
-            print("Erreur : Assurez-vous que main.py est dans le même dossier.")
-
     
-def fermeture_epsilon(self, etats):
+    def fermeture_epsilon(self, etats):
         """Calcule l'ensemble des états accessibles via des transitions £."""
         fermeture = set(etats)
         pile = list(etats)
@@ -367,3 +359,10 @@ def fermeture_epsilon(self, etats):
                         fermeture.add(v)
                         pile.append(v)
         return frozenset(fermeture)
+
+    if __name__ == "__main__":
+        try:
+            from main import menu_principal
+            menu_principal()
+        except ImportError:
+            print("Erreur : Assurez-vous que main.py est dans le même dossier.")
