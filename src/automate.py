@@ -272,11 +272,31 @@ class Automate:
         
         return self 
 
-    def est_standard(self):
-        if self.num_etats_initiaux != 1: return False
-        print(f" -> il y a {self.num_etats_initiaux} états initial/initiaux (il en faut 1 seul pour être standard).")
-        init = self.etats_initiaux[0]
-        return not any(init in dests for dests in self.transitions.values())
+    def est_standard(self, verbose=True):
+        raisons = []
+        
+        # 1. Vérification du nombre d'états initiaux
+        if self.num_etats_initiaux != 1:
+            raisons.append(f"- Il possède {self.num_etats_initiaux} états initiaux (il en faut exactement 1).")
+        
+        # 2. Vérification des transitions vers l'état initial
+        if self.num_etats_initiaux == 1:
+            init = self.etats_initiaux[0]
+            # On cherche si 'init' est présent dans n'importe quelle liste de destinations
+            for (etat_dep, sym), destinations in self.transitions.items():
+                if init in destinations:
+                    raisons.append(f"- L'état initial {init} est la cible d'une transition depuis l'état {etat_dep} avec '{sym}'.")
+                    break # Une seule raison suffit pour dire qu'il n'est pas standard
+
+        # 3. Affichage et retour
+        if raisons:
+            if verbose:
+                print("\nL'automate n'est PAS STANDARD :")
+                for r in raisons:
+                    print(r)
+            return False
+        
+        return True
 
     def standardiser(self):
         if self.est_standard():
