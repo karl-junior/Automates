@@ -1,6 +1,6 @@
 import os
 from automate import Automate
-from src import automate
+
 
 
 def menu_principal():
@@ -13,7 +13,7 @@ def menu_principal():
             print("Fermeture du programme.")
             break
 
-        nom_fichier = f"../tests/automate{choix}.txt"
+        nom_fichier = f"./tests/automate{choix}.txt"
 
         # Vérification de l'existence du fichier
         if not os.path.exists(nom_fichier):
