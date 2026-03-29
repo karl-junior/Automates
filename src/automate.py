@@ -250,6 +250,7 @@ class Automate:
 
     def est_standard(self):
         if self.num_etats_initiaux != 1: return False
+        print(f" -> il y a {self.num_etats_initiaux} états initial/initiaux (il en faut 1 seul pour être standard).")
         init = self.etats_initiaux[0]
         return not any(init in dests for dests in self.transitions.values())
 
@@ -258,6 +259,8 @@ class Automate:
             print("L'automate est déjà STANDARD. Opération annulée.")
             return self
         
+        print(f"Création d'un nouvel état initial {self.num_etats} déconnecté de toute transition entrante.")
+
         # 1. Créer le nouvel état initial (index = num_etats actuel)
         new_init = self.num_etats
         
