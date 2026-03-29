@@ -41,6 +41,11 @@ class Automate:
                     p = automate[i].split()
                     if len(p) >= 3:
                         deb, sym, fin = int(p[0]), p[1], int(p[2])
+                        
+                        # Solution de l'epsilon "caché"
+                        if sym == '£' or sym == 'epsilon': 
+                            sym = '£'
+                        
                         if (deb, sym) not in self.transitions:
                             self.transitions[(deb, sym)] = []
                         if fin not in self.transitions[(deb, sym)]:
@@ -50,16 +55,24 @@ class Automate:
             print(f"Erreur lecture : {e}")
 
     def afficher(self):
-        # 1. Préparation de l'alphabet (on ignore le £ pour le tri, on l'ajoute à la fin)
+        """Affiche l'automate sous forme de table de transition"""
+        # 1. Extraction et nettoyage de l'alphabet
         symboles_presents = set(sym for (_, sym) in self.transitions.keys())
-        alphabet = sorted([s for s in symboles_presents if s != "£"])
-        if "£" in symboles_presents:
+        
+        # On définit l'alphabet réel (a, b...) en excluant l'epsilon (qu'il s'appelle £ ou c)
+        alphabet = sorted([s for s in symboles_presents if s != "£" and s != "c"])
+        
+        # On ajoute l'epsilon à la fin si présent, en l'unifiant sous le symbole £
+        has_epsilon = "£" in symboles_presents or "c" in symboles_presents
+        if has_epsilon:
             alphabet.append("£")
         
-        if not alphabet: alphabet = [" "]
+        if not alphabet: 
+            alphabet = [" "]
 
-        # 2. Préparation des données et calcul de la largeur max pour les destinations
+        # 2. Préparation des lignes et calcul des largeurs
         lignes = []
+        # Largeur par défaut basée sur le nom du symbole
         largeurs_colonnes = [len(sym) for sym in alphabet]
 
         for etat in range(self.num_etats):
@@ -69,44 +82,47 @@ class Automate:
             
             destinations = []
             for i, symbole in enumerate(alphabet):
-                cle = (etat, symbole)
+                # Si on cherche l'epsilon unifié £, on regarde aussi pour 'c'
+                sym_recherche = symbole
+                if symbole == "£" and "c" in symboles_presents:
+                    sym_recherche = "c"
+                
+                cle = (etat, sym_recherche)
                 if cle in self.transitions:
                     dests_str = ",".join(str(d) for d in sorted(self.transitions[cle]))
                 else:
                     dests_str = "--"
                 
                 destinations.append(dests_str)
-                # Mise à jour de la largeur de la colonne si le contenu est plus large
+                # On ajuste la largeur de la colonne si une destination est longue (ex: 1,2,5)
                 if len(dests_str) > largeurs_colonnes[i]:
                     largeurs_colonnes[i] = len(dests_str)
             
             lignes.append((marqueur.strip(), str(etat), destinations))
 
-        # 3. Calcul de la largeur de la colonne "État" (Marqueur + Numéro)
-        # On cherche le plus long numéro d'état (ex: "12") + place pour "E S "
-        largeur_etat = max(len(l[1]) for l in lignes) if lignes else 1
-        largeur_col_gauche = 4 + largeur_etat # 4 espaces pour "E S "
+        # 3. Calcul de la largeur de la colonne de gauche (Marqueurs + Numéro)
+        largeur_num_etat = max(len(l[1]) for l in lignes) if lignes else 1
+        largeur_col_gauche = 4 + largeur_num_etat # Place pour "E S "
 
-        # 4. Affichage du tableau
+        # 4. Affichage final
         print("\n" + "="*20 + " TABLEAU DE TRANSITION " + "="*20)
         
         # En-tête
         en_tete = f"{'':<{largeur_col_gauche}} | "
         for i, symbole in enumerate(alphabet):
-            en_tete += f"{symbole:^{largeurs_colonnes[i]}} | " # Centré
+            en_tete += f"{symbole:^{largeurs_colonnes[i]}} | "
         
         print(en_tete)
         print("-" * len(en_tete))
 
-        # Contenu
+        # Contenu des états
         for marqueur, num_etat, cols in lignes:
-            # On aligne le marqueur à gauche et le numéro d'état juste après
-            # Exemple: "E S  12  | "
-            label_etat = f"{marqueur:<3} {num_etat:>{largeur_etat}}"
+            # Alignement : Marqueur à gauche, numéro à droite
+            label_etat = f"{marqueur:<3} {num_etat:>{largeur_num_etat}}"
             ligne_str = f"{label_etat} | "
             
             for i, dest in enumerate(cols):
-                ligne_str += f"{dest:<{largeurs_colonnes[i]}} | "
+                ligne_str += f"{dest:^{largeurs_colonnes[i]}} | "
             
             print(ligne_str)
         
@@ -205,21 +221,28 @@ class Automate:
         return auto_det
 
     def est_complet(self, verbose=True):
-        # Alphabet de 'a' jusqu'à 'num_symboles'
-        alphabet = [chr(ord('a') + i) for i in range(self.num_symboles)]
+        """Vérifie si l'automate est complet en ignorant les transitions epsilon."""
+        # 1. On définit l'alphabet de test (ex: 'a', 'b')
+        # On génère l'alphabet selon le nombre de symboles, mais on exclut l'epsilon
+        alphabet_test = [chr(ord('a') + i) for i in range(self.num_symboles)]
+        alphabet_test = [s for s in alphabet_test if s != "£" and s != "c"]
+        
         raisons = []
         complet = True
 
+        # 2. Vérification pour chaque état et chaque lettre
         for i in range(self.num_etats):
-            for sym in alphabet:
+            for sym in alphabet_test:
+                # Un état est incomplet s'il n'y a pas de transition pour un symbole donné
                 if (i, sym) not in self.transitions or not self.transitions[(i, sym)]:
                     raisons.append(f"- État {i} n'a pas de transition pour '{sym}'")
                     complet = False
 
+        # 3. Affichage des raisons si l'automate est incomplet
         if not complet and verbose:
-            print("\nL'automate n'est PAS COMPLET :")
+            print("\nL'automate n'est PAS COMPLET :") #
             for r in raisons:
-                print(r)
+                print(r) #
         
         return complet
     
