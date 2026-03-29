@@ -63,36 +63,68 @@ class Automate:
         return frozenset(fermeture)
 
     def afficher(self):
+        # 1. Préparation de l'alphabet (on ignore le £ pour le tri, on l'ajoute à la fin)
         symboles_presents = set(sym for (_, sym) in self.transitions.keys())
-        alphabet = sorted(list(symboles_presents)) if symboles_presents else [" "]
+        alphabet = sorted([s for s in symboles_presents if s != "£"])
+        if "£" in symboles_presents:
+            alphabet.append("£")
         
+        if not alphabet: alphabet = [" "]
+
+        # 2. Préparation des données et calcul de la largeur max pour les destinations
         lignes = []
+        largeurs_colonnes = [len(sym) for sym in alphabet]
+
         for etat in range(self.num_etats):
-            marq = ""
-            if etat in self.etats_initiaux: marq += "E "
-            if etat in self.etats_finaux: marq += "S"
+            marqueur = ""
+            if etat in self.etats_initiaux: marqueur += "E "
+            if etat in self.etats_finaux: marqueur += "S"
             
-            dests = []
-            for sym in alphabet:
-                target = self.transitions.get((etat, sym), [])
-                dests.append(",".join(str(d) for d in target) if target else "--")
-            lignes.append((marq.strip(), str(etat), dests))
+            destinations = []
+            for i, symbole in enumerate(alphabet):
+                cle = (etat, symbole)
+                if cle in self.transitions:
+                    dests_str = ",".join(str(d) for d in sorted(self.transitions[cle]))
+                else:
+                    dests_str = "--"
+                
+                destinations.append(dests_str)
+                # Mise à jour de la largeur de la colonne si le contenu est plus large
+                if len(dests_str) > largeurs_colonnes[i]:
+                    largeurs_colonnes[i] = len(dests_str)
+            
+            lignes.append((marqueur.strip(), str(etat), destinations))
 
-        largeurs = [max(len(sym), max([len(l[2][i]) for l in lignes] + [0])) for i, sym in enumerate(alphabet)]
+        # 3. Calcul de la largeur de la colonne "État" (Marqueur + Numéro)
+        # On cherche le plus long numéro d'état (ex: "12") + place pour "E S "
+        largeur_etat = max(len(l[1]) for l in lignes) if lignes else 1
+        largeur_col_gauche = 4 + largeur_etat # 4 espaces pour "E S "
 
-        print("\n======== TABLEAU DE TRANSITION =========")
-        head = f"{'':<5} | "
-        for i, sym in enumerate(alphabet):
-            head += f"{sym:<{largeurs[i]}} | "
-        print(head + "\n" + "-"*len(head))
+        # 4. Affichage du tableau
+        print("\n" + "="*20 + " TABLEAU DE TRANSITION " + "="*20)
+        
+        # En-tête
+        en_tete = f"{'':<{largeur_col_gauche}} | "
+        for i, symbole in enumerate(alphabet):
+            en_tete += f"{symbole:^{largeurs_colonnes[i]}} | " # Centré
+        
+        print(en_tete)
+        print("-" * len(en_tete))
 
-        for m, e, cols in lignes:
-            ligne_str = f"{m:<3} {e:<1} | "
-            for i, d in enumerate(cols):
-                ligne_str += f"{d:<{largeurs[i]}} | "
+        # Contenu
+        for marqueur, num_etat, cols in lignes:
+            # On aligne le marqueur à gauche et le numéro d'état juste après
+            # Exemple: "E S  12  | "
+            label_etat = f"{marqueur:<3} {num_etat:>{largeur_etat}}"
+            ligne_str = f"{label_etat} | "
+            
+            for i, dest in enumerate(cols):
+                ligne_str += f"{dest:<{largeurs_colonnes[i]}} | "
+            
             print(ligne_str)
-        print("========================================\n")
-
+        
+        print("=" * len(en_tete) + "\n")
+        
     def est_standard(self):
         if self.num_etats_initiaux != 1: return False
         init = self.etats_initiaux[0]
