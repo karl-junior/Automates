@@ -1,7 +1,28 @@
-=== TRACE AUTOMATE 26 ===
-Fichier source : tests/automate26.txt
+===============================================
+   TRACE COMPLÈTE AUTOMATE 26
+===============================================
 
---- ÉTAT INITIAL ---
+--- [1] AUTOMATE D'ORIGINE ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a  | b  | 
+------------------
+    0 | -- | -- | 
+E   1 | 2  | 2  | 
+    2 | 0  | 3  | 
+S   3 | 3  | 3  | 
+==================
+
+Déterministe : True
+Standard     : True
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 0 n'a pas de transition pour 'b'
+Complet      : False
+
+--- [2] TENTATIVE DE STANDARDISATION ---
+L'automate est déjà STANDARD. Opération annulée.
 
 ==================== TABLEAU DE TRANSITION ====================
       | a  | b  | 
@@ -13,13 +34,107 @@ S   3 | 3  | 3  |
 ==================
 
 
---- ANALYSE ---
+--- [3] DÉTERMINISATION ---
+
+L'automate est déjà DÉTERMINISTE.
 
 L'automate n'est PAS COMPLET :
 - État 0 n'a pas de transition pour 'a'
 - État 0 n'a pas de transition pour 'b'
 
-SYNTHÈSE : Déterministe: OUI | Standard: OUI | Complet: NON
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 0 n'a pas de transition pour 'b'
+État poubelle 4 ajouté.
 
---- TEST RECONNAISSANCE ---
-Le mot 'ab' est Accepté
+==================== TABLEAU DE TRANSITION ====================
+      | a | b | 
+----------------
+    0 | 4 | 4 | 
+E   1 | 2 | 2 | 
+    2 | 0 | 3 | 
+S   3 | 3 | 3 | 
+    4 | 4 | 4 | 
+================
+
+
+--- [4] COMPLÉTION ---
+L'automate est déjà complet.
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | b | 
+----------------
+    0 | 4 | 4 | 
+E   1 | 2 | 2 | 
+    2 | 0 | 3 | 
+S   3 | 3 | 3 | 
+    4 | 4 | 4 | 
+================
+
+
+--- [5] PASSAGE AU COMPLÉMENTAIRE ---
+
+Construction du complémentaire à partir de : AFDC (Déterministe Complet)
+Automate complémentaire généré avec succès.
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | b | 
+----------------
+S   0 | 4 | 4 | 
+E S 1 | 2 | 2 | 
+S   2 | 0 | 3 | 
+    3 | 3 | 3 | 
+S   4 | 4 | 4 | 
+================
+
+
+--- [6] MINIMISATION FINALE ---
+
+--- Phase de Minimisation (Algorithme de Moore) ---
+P0 = [NT1:[3], T1:[0, 1, 2, 4]]
+
+Analyse des transitions pour P0 :
+  État 3 : (a->NT1) (b->NT1)
+  État 0 : (a->T1) (b->T1)
+  État 1 : (a->T1) (b->T1)
+  État 2 : (a->T1) (b->NT1)
+  État 4 : (a->T1) (b->T1)
+P1 = [NT1:[3], T1:[0, 1, 4], T2:[2]]
+
+Analyse des transitions pour P1 :
+  État 3 : (a->NT1) (b->NT1)
+  État 0 : (a->T1) (b->T1)
+  État 1 : (a->T2) (b->T2)
+  État 4 : (a->T1) (b->T1)
+  État 2 : (a->T1) (b->NT1)
+P2 = [NT1:[3], T1:[0, 4], T2:[1], T3:[2]]
+
+Analyse des transitions pour P2 :
+  État 3 : (a->NT1) (b->NT1)
+  État 0 : (a->T1) (b->T1)
+  État 4 : (a->T1) (b->T1)
+  État 1 : (a->T3) (b->T3)
+  État 2 : (a->T1) (b->NT1)
+
+Table de correspondance (AFDC -> AFDCM) :
+  Nouvel état 0 (NT1) <-- regroupe : [3]
+  Nouvel état 1 (T1) <-- regroupe : [0, 4]
+  Nouvel état 2 (T2) <-- regroupe : [1]
+  Nouvel état 3 (T3) <-- regroupe : [2]
+Minimisation terminée : 4 états restants.
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | b | 
+----------------
+    0 | 0 | 0 | 
+S   1 | 1 | 1 | 
+E S 2 | 3 | 3 | 
+S   3 | 1 | 0 | 
+================
+
+
+--- [7] TEST DE RECONNAISSANCE FINAL ---
+Mot 'vide' accepté ? OUI
+Mot 'a' accepté ? OUI
+Mot 'ab' accepté ? NON
+Mot 'aba' accepté ? NON

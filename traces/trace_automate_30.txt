@@ -1,7 +1,25 @@
-=== TRACE AUTOMATE 30 ===
-Fichier source : tests/automate30.txt
+===============================================
+   TRACE COMPLÈTE AUTOMATE 30
+===============================================
 
---- ÉTAT INITIAL ---
+--- [1] AUTOMATE D'ORIGINE ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | 
+------------
+S   0 | 3 | 
+E   1 | 2 | 
+    2 | 3 | 
+S   3 | 4 | 
+S   4 | 0 | 
+============
+
+Déterministe : True
+Standard     : True
+Complet      : True
+
+--- [2] TENTATIVE DE STANDARDISATION ---
+L'automate est déjà STANDARD. Opération annulée.
 
 ==================== TABLEAU DE TRANSITION ====================
       | a | 
@@ -14,9 +32,88 @@ S   4 | 0 |
 ============
 
 
---- ANALYSE ---
+--- [3] DÉTERMINISATION ---
 
-SYNTHÈSE : Déterministe: OUI | Standard: OUI | Complet: OUI
+L'automate est déjà DÉTERMINISTE.
 
---- TEST RECONNAISSANCE ---
-Le mot 'ab' est Refusé
+==================== TABLEAU DE TRANSITION ====================
+      | a | 
+------------
+S   0 | 3 | 
+E   1 | 2 | 
+    2 | 3 | 
+S   3 | 4 | 
+S   4 | 0 | 
+============
+
+
+--- [4] COMPLÉTION ---
+L'automate est déjà complet.
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | 
+------------
+S   0 | 3 | 
+E   1 | 2 | 
+    2 | 3 | 
+S   3 | 4 | 
+S   4 | 0 | 
+============
+
+
+--- [5] PASSAGE AU COMPLÉMENTAIRE ---
+
+Construction du complémentaire à partir de : AFDC (Déterministe Complet)
+Automate complémentaire généré avec succès.
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | 
+------------
+    0 | 3 | 
+E S 1 | 2 | 
+S   2 | 3 | 
+    3 | 4 | 
+    4 | 0 | 
+============
+
+
+--- [6] MINIMISATION FINALE ---
+
+--- Phase de Minimisation (Algorithme de Moore) ---
+P0 = [NT1:[0, 3, 4], T1:[1, 2]]
+
+Analyse des transitions pour P0 :
+  État 0 : (a->NT1)
+  État 3 : (a->NT1)
+  État 4 : (a->NT1)
+  État 1 : (a->T1)
+  État 2 : (a->NT1)
+P1 = [NT1:[0, 3, 4], T1:[1], T2:[2]]
+
+Analyse des transitions pour P1 :
+  État 0 : (a->NT1)
+  État 3 : (a->NT1)
+  État 4 : (a->NT1)
+  État 1 : (a->T2)
+  État 2 : (a->NT1)
+
+Table de correspondance (AFDC -> AFDCM) :
+  Nouvel état 0 (NT1) <-- regroupe : [0, 3, 4]
+  Nouvel état 1 (T1) <-- regroupe : [1]
+  Nouvel état 2 (T2) <-- regroupe : [2]
+Minimisation terminée : 3 états restants.
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | 
+------------
+    0 | 0 | 
+E S 1 | 2 | 
+S   2 | 0 | 
+============
+
+
+--- [7] TEST DE RECONNAISSANCE FINAL ---
+Mot 'vide' accepté ? OUI
+Mot 'a' accepté ? OUI
+Mot 'ab' accepté ? NON
+Mot 'aba' accepté ? NON
