@@ -124,7 +124,7 @@ class Automate:
             print(ligne_str)
         
         print("=" * len(en_tete) + "\n")
-        
+
     def est_standard(self):
         if self.num_etats_initiaux != 1: return False
         init = self.etats_initiaux[0]
@@ -194,43 +194,43 @@ class Automate:
         return all(len(v) <= 1 for v in self.transitions.values())
 
     def est_complet(self):
-        alphabet = [chr(ord('a') + i) for i in range(self.num_symboles)]
+        # On récupère l'alphabet réel (a, b...) en ignorant epsilon
+        alphabet_reel = set(sym for (_, sym) in self.transitions.keys() if sym != "£")
+        
+        if not alphabet_reel:
+            return True # Automate vide ou uniquement epsilon
+
         for i in range(self.num_etats):
-            for sym in alphabet:
-                if (i, sym) not in self.transitions: return False
+            for sym in alphabet_reel:
+                # Si un état n'a pas de transition pour une des lettres de l'alphabet
+                if (i, sym) not in self.transitions or not self.transitions[(i, sym)]:
+                    return False
         return True
 
     def completer(self):
         if self.est_complet():
-            print("L'automate est déjà complet")
+            print("L'automate est déjà complet.")
             return
-            
-        # On récupère les vrais symboles (en ignorant epsilon £)
-        alphabet_reel = set()
-        for (_, sym) in self.transitions.keys():
-            if sym != "£":
-                alphabet_reel.add(sym)
-        
-        # Si l'alphabet extrait est vide, on utilise num_symboles par défaut
-        if not alphabet_reel:
-            alphabet_reel = [chr(ord('a') + i) for i in range(self.num_symboles)]
 
-        nouvel_etat = self.num_etats
+        # Alphabet des lettres (a, b, c...) uniquement
+        alphabet_reel = sorted(list(set(sym for (_, sym) in self.transitions.keys() if sym != "£")))
+        
+        poubelle = self.num_etats
         poubelle_creee = False
 
         for i in range(self.num_etats):
-            for j in alphabet_reel:
-                if (i, j) not in self.transitions:
+            for sym in alphabet_reel:
+                if (i, sym) not in self.transitions or not self.transitions[(i, sym)]:
                     if not poubelle_creee:
                         self.num_etats += 1
                         poubelle_creee = True
-                    self.transitions[(i, j)] = [nouvel_etat]
+                    self.transitions[(i, sym)] = [poubelle]
 
         if poubelle_creee:
-            # L'état poubelle boucle sur lui-même pour tous les symboles
-            for j in alphabet_reel:
-                self.transitions[(nouvel_etat, j)] = [nouvel_etat]
-            print(f"État poubelle {nouvel_etat} ajouté.")
+            # La poubelle doit boucler sur toutes les lettres
+            for sym in alphabet_reel:
+                self.transitions[(poubelle, sym)] = [poubelle]
+            print(f"État poubelle {poubelle} ajouté.")
 
     def minimiser(self, test_auto_min=False):
         # On définit l'alphabet réel en excluant epsilon et en se basant sur num_symboles
@@ -307,3 +307,11 @@ class Automate:
 
     def automate_epsilon(self):
         return any(sym == "£" for (_, sym) in self.transitions.keys())
+    
+
+    if __name__ == "__main__":
+        try:
+            from main import menu_principal
+            menu_principal()
+        except ImportError:
+            print("Erreur : Assurez-vous que main.py est dans le même dossier.")
