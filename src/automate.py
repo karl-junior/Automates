@@ -465,3 +465,4 @@ class Automate:
             menu_principal()
         except ImportError:
             print("Erreur : Assurez-vous que main.py est dans le même dossier.")
+#fin 
