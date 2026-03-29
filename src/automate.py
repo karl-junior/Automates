@@ -132,25 +132,39 @@ class Automate:
 
     def standardiser(self):
         if self.est_standard(): return self
-        new_init = self.num_etats
-        alphabet = [chr(ord('a') + i) for i in range(self.num_symboles)]
-        new_finaux = list(self.etats_finaux)
         
-        if any(e in self.etats_finaux for e in self.etats_initiaux):
-            new_finaux.append(new_init)
-
+        # 1. Créer le nouvel état initial (index = num_etats actuel)
+        new_init = self.num_etats
+        
+        # 2. Identifier TOUS les symboles (y compris £)
+        alphabet_complet = set(sym for (_, sym) in self.transitions.keys())
+        
         new_trans = self.transitions.copy()
-        for sym in alphabet:
+        new_finaux = list(self.etats_finaux)
+
+        # 3. Le nouvel état doit avoir les mêmes sorties que TOUS les anciens initiaux
+        for sym in alphabet_complet:
             targets = set()
             for e_old in self.etats_initiaux:
-                targets.update(self.transitions.get((e_old, sym), []))
-            if targets: new_trans[(new_init, sym)] = list(targets)
+                if (e_old, sym) in self.transitions:
+                    targets.update(self.transitions[(e_old, sym)])
+            
+            if targets:
+                new_trans[(new_init, sym)] = list(targets)
 
+        # 4. Gérer le caractère final
+        # Si un des anciens initiaux était final, le nouveau le devient
+        if any(e in self.etats_finaux for e in self.etats_initiaux):
+            if new_init not in new_finaux:
+                new_finaux.append(new_init)
+
+        # 5. Mise à jour de l'objet
         self.num_etats += 1
         self.etats_initiaux = [new_init]
         self.num_etats_initiaux = 1
         self.etats_finaux = new_finaux
         self.transitions = new_trans
+        
         return self
 
     def determiniser(self):
