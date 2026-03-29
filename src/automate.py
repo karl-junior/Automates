@@ -127,11 +127,66 @@ class Automate:
             print(ligne_str)
         print("===============================\n")
 
-    def standardiser(self):
-        return
-
+    # Un automate est standard si :
+    # Il a 1 etat initial
+    # Aucune transition ne revient vers l'état initial
     def est_standard(self):
-        return
+        if self.num_etats_initiaux != 1:
+            return False
+        
+        etat_initial = self.etats_initiaux[0]
+        
+        # On parcourt toutes les listes de destinations dans le dictionnaire
+        for destinations in self.transitions.values():
+            if etat_initial in destinations:
+                return False
+                
+        return True
+
+    def standardiser(self):
+        if self.est_standard():
+            print("L'automate est déjà standard.")
+            return self
+
+        # On crée un nouvel indice pour l'état standard (le dernier + 1)
+        nouvel_initial = self.num_etats
+        alphabet = [chr(ord('a') + i) for i in range(self.num_symboles)]
+        
+        # Les futurs états finaux sont les mêmes que les anciens
+        nouveaux_finaux = list(self.etats_finaux)
+        
+        # Si un ancien état initial était final -> le nouveau le devient aussi
+        # Gestion du mot vide
+        for e_init in self.etats_initiaux:
+            if e_init in self.etats_finaux:
+                if nouvel_initial not in nouveaux_finaux:
+                    nouveaux_finaux.append(nouvel_initial)
+                break
+
+        # On copie les transitions actuelles
+        nouvelles_transitions = self.transitions.copy()
+        
+        # Le nouvel état initial doit avoir les mêmes sorties que tous les anciens initiaux
+        for symbole in alphabet:
+            targets = set()
+            for e_init in self.etats_initiaux:
+                if (e_init, symbole) in self.transitions:
+                    for t in self.transitions[(e_init, symbole)]:
+                        targets.add(t)
+            
+            if targets:
+                nouvelles_transitions[(nouvel_initial, symbole)] = list(targets)
+
+        # On met à jour l'objet ou on en retourne un nouveau
+        self.num_etats += 1
+        self.etats_initiaux = [nouvel_initial]
+        self.num_etats_initiaux = 1
+        self.etats_finaux = nouveaux_finaux
+        self.num_etats_finaux = len(nouveaux_finaux)
+        self.transitions = nouvelles_transitions
+        
+        print(f"Automate standardisé. Nouvel état initial : {nouvel_initial}")
+        return self
 
     def determiniser(self):
         # 1. L'état initial du nouvel automate est l'ensemble de tous les états initiaux
