@@ -45,9 +45,9 @@ class Automate:
                             self.transitions[(deb, sym)] = []
                         if fin not in self.transitions[(deb, sym)]:
                             self.transitions[(deb, sym)].append(fin)
-            print(f"✅ Fichier '{chemin_fichier}' chargé.")
+            print(f"Fichier '{chemin_fichier}' chargé.")
         except Exception as e:
-            print(f"❌ Erreur lecture : {e}")
+            print(f"Erreur lecture : {e}")
 
     def fermeture_epsilon(self, etats):
         """Calcule l'ensemble des états accessibles via des transitions £."""
@@ -131,7 +131,9 @@ class Automate:
         return not any(init in dests for dests in self.transitions.values())
 
     def standardiser(self):
-        if self.est_standard(): return self
+        if self.est_standard():
+            print("L'automate est déjà STANDARD. Opération annulée.")
+            return self
         
         # 1. Créer le nouvel état initial (index = num_etats actuel)
         new_init = self.num_etats
@@ -168,6 +170,10 @@ class Automate:
         return self
 
     def determiniser(self):
+        if self.est_deterministe():
+            print("L'automate est déjà DÉTERMINISTE. Opération annulée.")
+            return self
+        
         alphabet = [chr(ord('a') + i) for i in range(self.num_symboles)]
         start_set = self.fermeture_epsilon(self.etats_initiaux)
         
@@ -225,7 +231,7 @@ class Automate:
         if self.est_complet():
             print("L'automate est déjà complet.")
             return
-
+    
         # Alphabet des lettres (a, b, c...) uniquement
         alphabet_reel = sorted(list(set(sym for (_, sym) in self.transitions.keys() if sym != "£")))
         
@@ -246,7 +252,38 @@ class Automate:
                 self.transitions[(poubelle, sym)] = [poubelle]
             print(f"État poubelle {poubelle} ajouté.")
 
+
+    def complementaire(self):
+        # Sécurité : le complémentaire nécessite un automate déterministe et complet
+        if not self.est_deterministe() or not self.est_complet():
+            print("Erreur : L'automate doit être DÉTERMINISTE et COMPLET pour calculer le complémentaire.")
+            return None
+
+        # On crée une copie de l'automate
+        auto_comp = Automate()
+        auto_comp.num_symboles = self.num_symboles
+        auto_comp.num_etats = self.num_etats
+        auto_comp.etats_initiaux = list(self.etats_initiaux)
+        auto_comp.num_etats_initiaux = self.num_etats_initiaux
+        auto_comp.transitions = self.transitions.copy()
+
+        # INVERSION DES ÉTATS FINAUX
+        # Tous les états qui n'étaient PAS finaux le deviennent
+        nouveaux_finaux = []
+        for i in range(self.num_etats):
+            if i not in self.etats_finaux:
+                nouveaux_finaux.append(i)
+        
+        auto_comp.etats_finaux = nouveaux_finaux
+        auto_comp.num_etats_finaux = len(nouveaux_finaux)
+        
+        print("Automate complémentaire généré.")
+        return auto_comp
+
     def minimiser(self, test_auto_min=False):
+        if not test_auto_min and self.minimiser(test_auto_min=True):
+            print("L'automate est déjà MINIMAL. Opération annulée.")
+            return self
         # On définit l'alphabet réel en excluant epsilon et en se basant sur num_symboles
         # Si num_symboles est 2, on ne prend que 'a' et 'b'
         alphabet = [chr(ord('a') + i) for i in range(self.num_symboles)]

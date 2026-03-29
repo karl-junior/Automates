@@ -22,7 +22,7 @@ def menu_principal():
                 break
 
         if not nom_fichier:
-            print(f"❌ Erreur : Impossible de trouver 'automate{choix}.txt'")
+            print(f"Erreur : Impossible de trouver 'automate{choix}.txt'")
             # Petit debug pour t'aider :
             print(f"Dossier actuel : {os.getcwd()}") 
             continue
@@ -34,7 +34,7 @@ def menu_principal():
         # On affiche les propriétés tout de suite pour savoir où on en est
         while True:
             print("\n" + "─"*30)
-            print(f"📍 ANALYSE DE L'AUTOMATE N°{choix} :")
+            print(f"ANALYSE DE L'AUTOMATE N°{choix} :")
             
             
             est_det = "OUI" if mon_automate.est_deterministe() else "NON"
@@ -50,6 +50,7 @@ def menu_principal():
             print("3. Compléter")
             print("4. Minimiser")
             print("5. Tester un mot")
+            print("6. Complémentaire")
             print("c. CHANGER d'automate")
             
             action = input("\nVotre choix : ").lower()
@@ -79,9 +80,18 @@ def menu_principal():
             elif action == '5':
                 mot = input("Mot à tester : ")
                 if mon_automate.reconnaitre_mot(mot):
-                    print("✅ Reconnu")
+                    print("Reconnu")
                 else:
-                    print("❌ Refusé")
+                    print("Refusé")
+            
+            elif choix == '6':
+                print("\nLancement du Complémentaire...")
+                # On vérifie d'abord s'il est déterministe et complet
+                if not mon_automate.est_deterministe() or not mon_automate.est_complet():
+                    print("Impossible : l'automate n'est pas déterministe ou pas complet.")
+                    print("Conseil : Faites '2' (Déterminiser) puis '3' (Compléter) avant.")
+                else:
+                    mon_automate = mon_automate.complementaire()
             
             else:
                 print("Choix non reconnu.")
