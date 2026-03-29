@@ -1,0 +1,26 @@
+=== TRACE AUTOMATE 29 ===
+Fichier source : tests/automate29.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      |  a  | 
+--------------
+S   0 |  4  | 
+E   1 | 2,4 | 
+    2 |  3  | 
+S   3 | 0,2 | 
+    4 |  5  | 
+    5 |  0  | 
+==============
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Transitions multiples pour les couples : (1, a), (3, a).
+
+SYNTHÈSE : Déterministe: NON | Standard: OUI | Complet: OUI
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

@@ -1,0 +1,55 @@
+=== TRACE AUTOMATE 20 ===
+Fichier source : tests/automate20.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a  | b  | d  | £  | 
+----------------------------
+E   0 | -- | -- | 5  | -- | 
+E   1 | 2  | -- | -- | -- | 
+    2 | -- | 3  | -- | -- | 
+    3 | -- | -- | -- | 4  | 
+    4 | -- | -- | 5  | -- | 
+S   5 | -- | -- | -- | -- | 
+E   6 | 2  | -- | -- | -- | 
+E   7 | -- | 3  | -- | -- | 
+E   8 | -- | -- | -- | 4  | 
+============================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Il possède 5 états initiaux, au lieu d'un seul.
+
+L'automate n'est PAS STANDARD :
+- Il possède 5 états initiaux (il en faut exactement 1).
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 0 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'd'
+- État 2 n'a pas de transition pour 'a'
+- État 2 n'a pas de transition pour 'd'
+- État 3 n'a pas de transition pour 'a'
+- État 3 n'a pas de transition pour 'b'
+- État 3 n'a pas de transition pour 'd'
+- État 4 n'a pas de transition pour 'a'
+- État 4 n'a pas de transition pour 'b'
+- État 5 n'a pas de transition pour 'a'
+- État 5 n'a pas de transition pour 'b'
+- État 5 n'a pas de transition pour 'd'
+- État 6 n'a pas de transition pour 'b'
+- État 6 n'a pas de transition pour 'd'
+- État 7 n'a pas de transition pour 'a'
+- État 7 n'a pas de transition pour 'd'
+- État 8 n'a pas de transition pour 'a'
+- État 8 n'a pas de transition pour 'b'
+- État 8 n'a pas de transition pour 'd'
+
+SYNTHÈSE : Déterministe: NON | Standard: NON | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

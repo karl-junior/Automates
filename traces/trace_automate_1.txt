@@ -1,0 +1,18 @@
+=== TRACE AUTOMATE 1 ===
+Fichier source : tests/automate1.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      |    | 
+-------------
+E S 0 | -- | 
+=============
+
+
+--- ANALYSE ---
+
+SYNTHÈSE : Déterministe: OUI | Standard: OUI | Complet: OUI
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

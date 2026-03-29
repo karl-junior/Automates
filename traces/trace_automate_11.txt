@@ -1,0 +1,24 @@
+=== TRACE AUTOMATE 11 ===
+Fichier source : tests/automate11.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | b | 
+----------------
+E   0 | 2 | 3 | 
+    1 | 3 | 3 | 
+S   2 | 1 | 0 | 
+    3 | 3 | 3 | 
+================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS STANDARD :
+- L'état initial 0 est la cible d'une transition depuis l'état 2 avec 'b'.
+
+SYNTHÈSE : Déterministe: OUI | Standard: NON | Complet: OUI
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

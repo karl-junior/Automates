@@ -1,0 +1,28 @@
+=== TRACE AUTOMATE 27 ===
+Fichier source : tests/automate27.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      |    | 
+-------------
+S   0 | -- | 
+E   1 | -- | 
+    2 | -- | 
+=============
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 0 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'a'
+- État 1 n'a pas de transition pour 'b'
+- État 2 n'a pas de transition pour 'a'
+- État 2 n'a pas de transition pour 'b'
+
+SYNTHÈSE : Déterministe: OUI | Standard: OUI | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

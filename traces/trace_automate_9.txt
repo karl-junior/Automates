@@ -1,0 +1,29 @@
+=== TRACE AUTOMATE 9 ===
+Fichier source : tests/automate9.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | b  | 
+-----------------
+S   0 | 2 | -- | 
+E S 1 | 2 | -- | 
+    2 | 3 | 3  | 
+    3 | 4 | -- | 
+    4 | 5 | 5  | 
+    5 | 0 | -- | 
+=================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'b'
+- État 3 n'a pas de transition pour 'b'
+- État 5 n'a pas de transition pour 'b'
+
+SYNTHÈSE : Déterministe: OUI | Standard: OUI | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

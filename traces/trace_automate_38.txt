@@ -1,0 +1,21 @@
+=== TRACE AUTOMATE 38 ===
+Fichier source : tests/automate38.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | b | 
+----------------
+E S 0 | 1 | 3 | 
+S   1 | 1 | 2 | 
+S   2 | 3 | 3 | 
+S   3 | 3 | 3 | 
+================
+
+
+--- ANALYSE ---
+
+SYNTHÈSE : Déterministe: OUI | Standard: OUI | Complet: OUI
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Accepté

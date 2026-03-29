@@ -1,0 +1,21 @@
+=== TRACE AUTOMATE 2 ===
+Fichier source : tests/automate2.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | 
+------------
+E S 0 | 0 | 
+============
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS STANDARD :
+- L'état initial 0 est la cible d'une transition depuis l'état 0 avec 'a'.
+
+SYNTHÈSE : Déterministe: OUI | Standard: NON | Complet: OUI
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

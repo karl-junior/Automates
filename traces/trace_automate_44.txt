@@ -1,0 +1,27 @@
+=== TRACE AUTOMATE 44 ===
+Fichier source : tests/automate44.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      |  a  |  b  | 
+--------------------
+E   0 | 1,2 |  2  | 
+    1 |  3  | --  | 
+S   2 |  3  |  2  | 
+S   3 | 2,3 | 2,3 | 
+====================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Transitions multiples pour les couples : (0, a), (3, a), (3, b).
+
+L'automate n'est PAS COMPLET :
+- État 1 n'a pas de transition pour 'b'
+
+SYNTHÈSE : Déterministe: NON | Standard: OUI | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Accepté

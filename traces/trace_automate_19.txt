@@ -1,0 +1,20 @@
+=== TRACE AUTOMATE 19 ===
+Fichier source : tests/automate19.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | 
+------------
+S   0 | 0 | 
+E   1 | 2 | 
+    2 | 0 | 
+============
+
+
+--- ANALYSE ---
+
+SYNTHÈSE : Déterministe: OUI | Standard: OUI | Complet: OUI
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

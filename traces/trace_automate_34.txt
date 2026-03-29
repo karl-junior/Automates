@@ -1,0 +1,41 @@
+=== TRACE AUTOMATE 34 ===
+Fichier source : tests/automate34.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a  | b  |  £  | 
+------------------------
+E   0 | -- | -- | 1,4 | 
+    1 | 2  | -- |  2  | 
+    2 | -- | 3  | --  | 
+    3 | -- | -- | 2,6 | 
+    4 | -- | 5  | --  | 
+    5 | -- | -- | 4,6 | 
+S   6 | -- | -- | --  | 
+========================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Il contient des epsilon-transitions (£).
+- Transitions multiples pour les couples : (0, £), (3, £), (5, £).
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 0 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'b'
+- État 2 n'a pas de transition pour 'a'
+- État 3 n'a pas de transition pour 'a'
+- État 3 n'a pas de transition pour 'b'
+- État 4 n'a pas de transition pour 'a'
+- État 5 n'a pas de transition pour 'a'
+- État 5 n'a pas de transition pour 'b'
+- État 6 n'a pas de transition pour 'a'
+- État 6 n'a pas de transition pour 'b'
+
+SYNTHÈSE : Déterministe: NON | Standard: OUI | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Accepté

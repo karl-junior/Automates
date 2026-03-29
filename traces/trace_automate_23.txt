@@ -1,0 +1,33 @@
+=== TRACE AUTOMATE 23 ===
+Fichier source : tests/automate23.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a  | b  | d  | £  | 
+----------------------------
+S   0 | -- | -- | 0  | -- | 
+E   1 | 2  | -- | -- | -- | 
+    2 | 2  | 3  | -- | -- | 
+    3 | -- | 3  | -- | 4  | 
+    4 | -- | -- | 0  | 4  | 
+============================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 0 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'd'
+- État 2 n'a pas de transition pour 'd'
+- État 3 n'a pas de transition pour 'a'
+- État 3 n'a pas de transition pour 'd'
+- État 4 n'a pas de transition pour 'a'
+- État 4 n'a pas de transition pour 'b'
+
+SYNTHÈSE : Déterministe: OUI | Standard: OUI | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

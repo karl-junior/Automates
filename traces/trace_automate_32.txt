@@ -1,0 +1,107 @@
+=== TRACE AUTOMATE 32 ===
+Fichier source : tests/automate32.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | £  | 
+------------------------
+E    0 | -- | -- | -- | 
+     1 | -- | -- | -- | 
+     2 | -- | -- | -- | 
+     3 | -- | 4  | -- | 
+     4 | -- | -- | -- | 
+     5 | -- | -- | -- | 
+     6 | 7  | -- | -- | 
+     7 | -- | -- | -- | 
+     8 | -- | -- | 9  | 
+     9 | -- | -- | -- | 
+    10 | -- | -- | -- | 
+    11 | -- | -- | -- | 
+    12 | 13 | -- | -- | 
+    13 | -- | -- | -- | 
+    14 | -- | -- | -- | 
+    15 | -- | 16 | -- | 
+    16 | -- | -- | -- | 
+    17 | -- | -- | -- | 
+    18 | -- | -- | 19 | 
+    19 | -- | -- | -- | 
+    20 | -- | -- | -- | 
+S   21 | -- | -- | -- | 
+========================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Il contient des epsilon-transitions (£).
+- Transitions multiples pour les couples : (0, £), (1, £), (2, £), (4, £), (10, £), (11, £), (13, £), (17, £), (19, £).
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 0 n'a pas de transition pour 'b'
+- État 0 n'a pas de transition pour 'd'
+- État 1 n'a pas de transition pour 'a'
+- État 1 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'd'
+- État 2 n'a pas de transition pour 'a'
+- État 2 n'a pas de transition pour 'b'
+- État 2 n'a pas de transition pour 'd'
+- État 3 n'a pas de transition pour 'a'
+- État 3 n'a pas de transition pour 'd'
+- État 4 n'a pas de transition pour 'a'
+- État 4 n'a pas de transition pour 'b'
+- État 4 n'a pas de transition pour 'd'
+- État 5 n'a pas de transition pour 'a'
+- État 5 n'a pas de transition pour 'b'
+- État 5 n'a pas de transition pour 'd'
+- État 6 n'a pas de transition pour 'b'
+- État 6 n'a pas de transition pour 'd'
+- État 7 n'a pas de transition pour 'a'
+- État 7 n'a pas de transition pour 'b'
+- État 7 n'a pas de transition pour 'd'
+- État 8 n'a pas de transition pour 'a'
+- État 8 n'a pas de transition pour 'b'
+- État 8 n'a pas de transition pour 'd'
+- État 9 n'a pas de transition pour 'a'
+- État 9 n'a pas de transition pour 'b'
+- État 9 n'a pas de transition pour 'd'
+- État 10 n'a pas de transition pour 'a'
+- État 10 n'a pas de transition pour 'b'
+- État 10 n'a pas de transition pour 'd'
+- État 11 n'a pas de transition pour 'a'
+- État 11 n'a pas de transition pour 'b'
+- État 11 n'a pas de transition pour 'd'
+- État 12 n'a pas de transition pour 'b'
+- État 12 n'a pas de transition pour 'd'
+- État 13 n'a pas de transition pour 'a'
+- État 13 n'a pas de transition pour 'b'
+- État 13 n'a pas de transition pour 'd'
+- État 14 n'a pas de transition pour 'a'
+- État 14 n'a pas de transition pour 'b'
+- État 14 n'a pas de transition pour 'd'
+- État 15 n'a pas de transition pour 'a'
+- État 15 n'a pas de transition pour 'd'
+- État 16 n'a pas de transition pour 'a'
+- État 16 n'a pas de transition pour 'b'
+- État 16 n'a pas de transition pour 'd'
+- État 17 n'a pas de transition pour 'a'
+- État 17 n'a pas de transition pour 'b'
+- État 17 n'a pas de transition pour 'd'
+- État 18 n'a pas de transition pour 'a'
+- État 18 n'a pas de transition pour 'b'
+- État 18 n'a pas de transition pour 'd'
+- État 19 n'a pas de transition pour 'a'
+- État 19 n'a pas de transition pour 'b'
+- État 19 n'a pas de transition pour 'd'
+- État 20 n'a pas de transition pour 'a'
+- État 20 n'a pas de transition pour 'b'
+- État 20 n'a pas de transition pour 'd'
+- État 21 n'a pas de transition pour 'a'
+- État 21 n'a pas de transition pour 'b'
+- État 21 n'a pas de transition pour 'd'
+
+SYNTHÈSE : Déterministe: NON | Standard: OUI | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

@@ -1,0 +1,22 @@
+=== TRACE AUTOMATE 3 ===
+Fichier source : tests/automate3.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a  | 
+-------------
+E   0 | 1  | 
+S   1 | -- | 
+=============
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS COMPLET :
+- État 1 n'a pas de transition pour 'a'
+
+SYNTHÈSE : Déterministe: OUI | Standard: OUI | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

@@ -1,0 +1,29 @@
+=== TRACE AUTOMATE 43 ===
+Fichier source : tests/automate43.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a |  b  | 
+------------------
+E   0 | 0 | 0,1 | 
+    1 | 2 | --  | 
+S   2 | 2 |  2  | 
+==================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Transitions multiples pour les couples : (0, b).
+
+L'automate n'est PAS STANDARD :
+- L'état initial 0 est la cible d'une transition depuis l'état 0 avec 'a'.
+
+L'automate n'est PAS COMPLET :
+- État 1 n'a pas de transition pour 'b'
+
+SYNTHÈSE : Déterministe: NON | Standard: NON | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

@@ -1,0 +1,31 @@
+=== TRACE AUTOMATE 14 ===
+Fichier source : tests/automate14.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a  | b  | d | £  | 
+---------------------------
+E   0 | 0  | 2  | 1 | 3  | 
+S   1 | -- | -- | 1 | -- | 
+    2 | -- | 2  | 1 | 3  | 
+    3 | -- | -- | 1 | 3  | 
+===========================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS STANDARD :
+- L'état initial 0 est la cible d'une transition depuis l'état 0 avec 'a'.
+
+L'automate n'est PAS COMPLET :
+- État 1 n'a pas de transition pour 'a'
+- État 1 n'a pas de transition pour 'b'
+- État 2 n'a pas de transition pour 'a'
+- État 3 n'a pas de transition pour 'a'
+- État 3 n'a pas de transition pour 'b'
+
+SYNTHÈSE : Déterministe: OUI | Standard: NON | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

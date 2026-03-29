@@ -1,0 +1,23 @@
+=== TRACE AUTOMATE 41 ===
+Fichier source : tests/automate41.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | b | 
+----------------
+E   0 | 1 | 4 | 
+S   1 | 2 | 3 | 
+S   2 | 2 | 3 | 
+S   3 | 5 | 5 | 
+S   4 | 5 | 5 | 
+    5 | 5 | 5 | 
+================
+
+
+--- ANALYSE ---
+
+SYNTHÈSE : Déterministe: OUI | Standard: OUI | Complet: OUI
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Accepté

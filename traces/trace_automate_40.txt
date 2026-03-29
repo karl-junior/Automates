@@ -1,0 +1,31 @@
+=== TRACE AUTOMATE 40 ===
+Fichier source : tests/automate40.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      |  a  |  b  | 
+--------------------
+E S 0 | --  | 1,2 | 
+E   1 | 0,2 |  2  | 
+S   2 |  0  | --  | 
+====================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Il possède 2 états initiaux, au lieu d'un seul.
+- Transitions multiples pour les couples : (0, b), (1, a).
+
+L'automate n'est PAS STANDARD :
+- Il possède 2 états initiaux (il en faut exactement 1).
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 2 n'a pas de transition pour 'b'
+
+SYNTHÈSE : Déterministe: NON | Standard: NON | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Accepté

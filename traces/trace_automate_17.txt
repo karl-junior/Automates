@@ -1,0 +1,44 @@
+=== TRACE AUTOMATE 17 ===
+Fichier source : tests/automate17.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      |  a  |  b  |  d  |  £  | 
+--------------------------------
+    0 | --  | --  | --  | --  | 
+E   1 | 1,2 | --  | --  | --  | 
+E   2 | --  | 2,3 | --  | --  | 
+E   3 | --  | --  | --  | 3,4 | 
+E   4 | --  | --  | 4,5 | --  | 
+S   5 |  0  |  0  |  0  |  0  | 
+================================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Il possède 4 états initiaux, au lieu d'un seul.
+- Transitions multiples pour les couples : (1, a), (2, b), (3, c), (4, d).
+
+L'automate n'est PAS STANDARD :
+- Il possède 4 états initiaux (il en faut exactement 1).
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 0 n'a pas de transition pour 'b'
+- État 0 n'a pas de transition pour 'd'
+- État 1 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'd'
+- État 2 n'a pas de transition pour 'a'
+- État 2 n'a pas de transition pour 'd'
+- État 3 n'a pas de transition pour 'a'
+- État 3 n'a pas de transition pour 'b'
+- État 3 n'a pas de transition pour 'd'
+- État 4 n'a pas de transition pour 'a'
+- État 4 n'a pas de transition pour 'b'
+
+SYNTHÈSE : Déterministe: NON | Standard: NON | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

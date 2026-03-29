@@ -1,0 +1,28 @@
+=== TRACE AUTOMATE 7 ===
+Fichier source : tests/automate7.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      |  a  | 
+--------------
+S   0 | --  | 
+E   1 | 0,1 | 
+==============
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Transitions multiples pour les couples : (1, a).
+
+L'automate n'est PAS STANDARD :
+- L'état initial 1 est la cible d'une transition depuis l'état 1 avec 'a'.
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+
+SYNTHÈSE : Déterministe: NON | Standard: NON | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

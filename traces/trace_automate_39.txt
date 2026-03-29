@@ -1,0 +1,31 @@
+=== TRACE AUTOMATE 39 ===
+Fichier source : tests/automate39.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      |  a  | b  | 
+-------------------
+E   0 |  1  | 2  | 
+E S 1 |  1  | 2  | 
+    2 |  0  | 1  | 
+E   3 | 1,2 | -- | 
+===================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Il possède 3 états initiaux, au lieu d'un seul.
+- Transitions multiples pour les couples : (3, a).
+
+L'automate n'est PAS STANDARD :
+- Il possède 3 états initiaux (il en faut exactement 1).
+
+L'automate n'est PAS COMPLET :
+- État 3 n'a pas de transition pour 'b'
+
+SYNTHÈSE : Déterministe: NON | Standard: NON | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Accepté

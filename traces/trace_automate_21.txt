@@ -1,0 +1,35 @@
+=== TRACE AUTOMATE 21 ===
+Fichier source : tests/automate21.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a  | b  | d  | £  | 
+----------------------------
+    0 | -- | -- | 1  | -- | 
+E S 1 | 2  | -- | -- | -- | 
+    2 | -- | 3  | -- | -- | 
+    3 | -- | -- | -- | 0  | 
+============================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS STANDARD :
+- L'état initial 1 est la cible d'une transition depuis l'état 0 avec 'd'.
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 0 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'd'
+- État 2 n'a pas de transition pour 'a'
+- État 2 n'a pas de transition pour 'd'
+- État 3 n'a pas de transition pour 'a'
+- État 3 n'a pas de transition pour 'b'
+- État 3 n'a pas de transition pour 'd'
+
+SYNTHÈSE : Déterministe: OUI | Standard: NON | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

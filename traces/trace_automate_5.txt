@@ -1,0 +1,34 @@
+=== TRACE AUTOMATE 5 ===
+Fichier source : tests/automate5.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a  | b  | 
+------------------
+    0 | 0  | 0  | 
+E   1 | 2  | 0  | 
+S   2 | -- | -- | 
+E   3 | 0  | 4  | 
+S   4 | -- | -- | 
+==================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Il possède 2 états initiaux, au lieu d'un seul.
+
+L'automate n'est PAS STANDARD :
+- Il possède 2 états initiaux (il en faut exactement 1).
+
+L'automate n'est PAS COMPLET :
+- État 2 n'a pas de transition pour 'a'
+- État 2 n'a pas de transition pour 'b'
+- État 4 n'a pas de transition pour 'a'
+- État 4 n'a pas de transition pour 'b'
+
+SYNTHÈSE : Déterministe: NON | Standard: NON | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé

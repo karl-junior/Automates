@@ -1,0 +1,29 @@
+=== TRACE AUTOMATE 37 ===
+Fichier source : tests/automate37.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a  | b  | 
+------------------
+E S 0 | 1  | 3  | 
+S   1 | 2  | 4  | 
+S   2 | -- | 0  | 
+S   3 | 1  | 0  | 
+S   4 | 1  | -- | 
+==================
+
+
+--- ANALYSE ---
+
+L'automate n'est PAS STANDARD :
+- L'état initial 0 est la cible d'une transition depuis l'état 2 avec 'b'.
+
+L'automate n'est PAS COMPLET :
+- État 2 n'a pas de transition pour 'a'
+- État 4 n'a pas de transition pour 'b'
+
+SYNTHÈSE : Déterministe: OUI | Standard: NON | Complet: NON
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Accepté

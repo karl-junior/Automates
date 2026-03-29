@@ -1,0 +1,22 @@
+=== TRACE AUTOMATE 30 ===
+Fichier source : tests/automate30.txt
+
+--- ÉTAT INITIAL ---
+
+==================== TABLEAU DE TRANSITION ====================
+      | a | 
+------------
+S   0 | 3 | 
+E   1 | 2 | 
+    2 | 3 | 
+S   3 | 4 | 
+S   4 | 0 | 
+============
+
+
+--- ANALYSE ---
+
+SYNTHÈSE : Déterministe: OUI | Standard: OUI | Complet: OUI
+
+--- TEST RECONNAISSANCE ---
+Le mot 'ab' est Refusé
