@@ -49,19 +49,6 @@ class Automate:
         except Exception as e:
             print(f"Erreur lecture : {e}")
 
-    def fermeture_epsilon(self, etats):
-        """Calcule l'ensemble des états accessibles via des transitions £."""
-        fermeture = set(etats)
-        pile = list(etats)
-        while pile:
-            u = pile.pop()
-            if (u, "£") in self.transitions:
-                for v in self.transitions[(u, "£")]:
-                    if v not in fermeture:
-                        fermeture.add(v)
-                        pile.append(v)
-        return frozenset(fermeture)
-
     def afficher(self):
         # 1. Préparation de l'alphabet (on ignore le £ pour le tri, on l'ajoute à la fin)
         symboles_presents = set(sym for (_, sym) in self.transitions.keys())
@@ -125,6 +112,89 @@ class Automate:
         
         print("=" * len(en_tete) + "\n")
 
+    def est_deterministe(self):
+        if self.num_etats_initiaux > 1 or self.automate_epsilon(): return False
+        return all(len(v) <= 1 for v in self.transitions.values())
+
+    def determiniser(self):
+        if self.est_deterministe():
+            print("L'automate est déjà DÉTERMINISTE. Opération annulée.")
+            return self
+        
+        alphabet = [chr(ord('a') + i) for i in range(self.num_symboles)]
+        start_set = self.fermeture_epsilon(self.etats_initiaux)
+        
+        new_states = [start_set]
+        new_trans = {}
+        queue = [start_set]
+
+        while queue:
+            current_set = queue.pop(0)
+            for sym in alphabet:
+                next_set_raw = set()
+                for etat in current_set:
+                    next_set_raw.update(self.transitions.get((etat, sym), []))
+                
+                if next_set_raw:
+                    next_set = self.fermeture_epsilon(next_set_raw)
+                    new_trans[(current_set, sym)] = next_set
+                    if next_set not in new_states:
+                        new_states.append(next_set)
+                        queue.append(next_set)
+
+        auto_det = Automate()
+        auto_det.num_symboles = self.num_symboles
+        auto_det.num_etats = len(new_states)
+        mapping = {s: i for i, s in enumerate(new_states)}
+
+        auto_det.etats_initiaux = [mapping[start_set]]
+        auto_det.num_etats_initiaux = 1
+        auto_det.etats_finaux = [mapping[s] for s in new_states if any(e in self.etats_finaux for e in s)]
+        auto_det.num_etats_finaux = len(auto_det.etats_finaux)
+        
+        for (src, sym), dst in new_trans.items():
+            auto_det.transitions[(mapping[src], sym)] = [mapping[dst]]
+        return auto_det
+
+    def est_complet(self):
+        # On récupère l'alphabet réel (a, b...) en ignorant epsilon
+        alphabet_reel = set(sym for (_, sym) in self.transitions.keys() if sym != "£")
+        
+        if not alphabet_reel:
+            return True # Automate vide ou uniquement epsilon
+
+        for i in range(self.num_etats):
+            for sym in alphabet_reel:
+                # Si un état n'a pas de transition pour une des lettres de l'alphabet
+                if (i, sym) not in self.transitions or not self.transitions[(i, sym)]:
+                    return False
+        return True
+
+    def completer(self):
+        if self.est_complet():
+            print("L'automate est déjà complet.")
+            return
+    
+        # Alphabet des lettres (a, b, c...) uniquement
+        alphabet_reel = sorted(list(set(sym for (_, sym) in self.transitions.keys() if sym != "£")))
+        
+        poubelle = self.num_etats
+        poubelle_creee = False
+
+        for i in range(self.num_etats):
+            for sym in alphabet_reel:
+                if (i, sym) not in self.transitions or not self.transitions[(i, sym)]:
+                    if not poubelle_creee:
+                        self.num_etats += 1
+                        poubelle_creee = True
+                    self.transitions[(i, sym)] = [poubelle]
+
+        if poubelle_creee:
+            # La poubelle doit boucler sur toutes les lettres
+            for sym in alphabet_reel:
+                self.transitions[(poubelle, sym)] = [poubelle]
+            print(f"État poubelle {poubelle} ajouté.")
+
     def est_standard(self):
         if self.num_etats_initiaux != 1: return False
         init = self.etats_initiaux[0]
@@ -169,90 +239,7 @@ class Automate:
         
         return self
 
-    def determiniser(self):
-        if self.est_deterministe():
-            print("L'automate est déjà DÉTERMINISTE. Opération annulée.")
-            return self
-        
-        alphabet = [chr(ord('a') + i) for i in range(self.num_symboles)]
-        start_set = self.fermeture_epsilon(self.etats_initiaux)
-        
-        new_states = [start_set]
-        new_trans = {}
-        queue = [start_set]
-
-        while queue:
-            current_set = queue.pop(0)
-            for sym in alphabet:
-                next_set_raw = set()
-                for etat in current_set:
-                    next_set_raw.update(self.transitions.get((etat, sym), []))
-                
-                if next_set_raw:
-                    next_set = self.fermeture_epsilon(next_set_raw)
-                    new_trans[(current_set, sym)] = next_set
-                    if next_set not in new_states:
-                        new_states.append(next_set)
-                        queue.append(next_set)
-
-        auto_det = Automate()
-        auto_det.num_symboles = self.num_symboles
-        auto_det.num_etats = len(new_states)
-        mapping = {s: i for i, s in enumerate(new_states)}
-
-        auto_det.etats_initiaux = [mapping[start_set]]
-        auto_det.num_etats_initiaux = 1
-        auto_det.etats_finaux = [mapping[s] for s in new_states if any(e in self.etats_finaux for e in s)]
-        auto_det.num_etats_finaux = len(auto_det.etats_finaux)
-        
-        for (src, sym), dst in new_trans.items():
-            auto_det.transitions[(mapping[src], sym)] = [mapping[dst]]
-        return auto_det
-
-    def est_deterministe(self):
-        if self.num_etats_initiaux > 1 or self.automate_epsilon(): return False
-        return all(len(v) <= 1 for v in self.transitions.values())
-
-    def est_complet(self):
-        # On récupère l'alphabet réel (a, b...) en ignorant epsilon
-        alphabet_reel = set(sym for (_, sym) in self.transitions.keys() if sym != "£")
-        
-        if not alphabet_reel:
-            return True # Automate vide ou uniquement epsilon
-
-        for i in range(self.num_etats):
-            for sym in alphabet_reel:
-                # Si un état n'a pas de transition pour une des lettres de l'alphabet
-                if (i, sym) not in self.transitions or not self.transitions[(i, sym)]:
-                    return False
-        return True
-
-    def completer(self):
-        if self.est_complet():
-            print("L'automate est déjà complet.")
-            return
-    
-        # Alphabet des lettres (a, b, c...) uniquement
-        alphabet_reel = sorted(list(set(sym for (_, sym) in self.transitions.keys() if sym != "£")))
-        
-        poubelle = self.num_etats
-        poubelle_creee = False
-
-        for i in range(self.num_etats):
-            for sym in alphabet_reel:
-                if (i, sym) not in self.transitions or not self.transitions[(i, sym)]:
-                    if not poubelle_creee:
-                        self.num_etats += 1
-                        poubelle_creee = True
-                    self.transitions[(i, sym)] = [poubelle]
-
-        if poubelle_creee:
-            # La poubelle doit boucler sur toutes les lettres
-            for sym in alphabet_reel:
-                self.transitions[(poubelle, sym)] = [poubelle]
-            print(f"État poubelle {poubelle} ajouté.")
-
-
+   
     def complementaire(self):
         # Sécurité : le complémentaire nécessite un automate déterministe et complet
         if not self.est_deterministe() or not self.est_complet():
@@ -366,3 +353,17 @@ class Automate:
             menu_principal()
         except ImportError:
             print("Erreur : Assurez-vous que main.py est dans le même dossier.")
+
+    
+def fermeture_epsilon(self, etats):
+        """Calcule l'ensemble des états accessibles via des transitions £."""
+        fermeture = set(etats)
+        pile = list(etats)
+        while pile:
+            u = pile.pop()
+            if (u, "£") in self.transitions:
+                for v in self.transitions[(u, "£")]:
+                    if v not in fermeture:
+                        fermeture.add(v)
+                        pile.append(v)
+        return frozenset(fermeture)
