@@ -112,32 +112,56 @@ class Automate:
         
         print("=" * len(en_tete) + "\n")
 
-    def est_deterministe(self):
-        # AJOUT PRINT EXPLICATIONS
+    
+    def afficher_composition(self, mapping):
+        """Affiche la correspondance entre les états composés et les nouveaux indices (Consigne Image)."""
+        print("\nTable de correspondance des états composés (AF -> AFDC) :")
+        for compose, index in mapping.items():
+            # On trie les anciens états et on les sépare par un point
+            liste_etats = sorted(list(compose))
+            composition = "{" + ".".join(map(str, liste_etats)) + "}"
+            print(f"  État {index} correspond à : {composition}")
+
+    def est_deterministe(self, verbose=True):
+        raisons = []
+        
+        # Un AF ne doit avoir qu'un seul état initial
         if self.num_etats_initiaux > 1:
-            print(f"   -> Non-déterministe : {self.num_etats_initiaux} états initiaux trouvés (il en faut 1).")
-            return False
+            raisons.append(f"- Il possède {self.num_etats_initiaux} états initiaux, au lieu d'un seul.")
+        
+        # Un AF ne doit pas avoir d'epsilon-transitions (£)
         if self.automate_epsilon():
-            print("   -> Non-déterministe : présence de transitions epsilon (£).")
+            raisons.append("- Il contient des epsilon-transitions (£).")
+        
+        # Chaque état ne doit avoir qu'une seule transition possible par symbole
+        conflits = []
+        for (etat, sym), successeurs in self.transitions.items():
+            if len(successeurs) > 1:
+                conflits.append(f"({etat}, {sym})")
+        
+        if conflits:
+            raisons.append(f"- Transitions multiples pour les couples : {', '.join(conflits)}.")
+
+        if raisons:
+            if verbose:
+                print("\nL'automate n'est PAS déterministe pour les raisons suivantes :")
+                for r in raisons:
+                    print(r)
             return False
         
-        for (etat, sym), destinations in self.transitions.items():
-            if len(destinations) > 1:
-                print(f"   -> Non-déterministe : l'état {etat} possède plusieurs sorties pour '{sym}' vers {destinations}.")
-                return False
         return True
 
     def determiniser(self):
-        if self.est_deterministe():
-            print("L'automate est déjà DÉTERMINISTE. Opération annulée.")
-            return self
-        
-        # AJOUT PRINT EXPLICATIONS
-        print("   [Action] Début de la déterminisation (algorithme par sous-ensembles)...")
-        
+        if self.est_deterministe(verbose=True):
+            print("\nL'automate est déjà DÉTERMINISTE.")
+            return self.completer() if not self.est_complet() else self
+
+        print("\n--- Phase de Déterminisation (Sous-ensembles) ---")
+        # On définit l'alphabet sans epsilon
         alphabet = [chr(ord('a') + i) for i in range(self.num_symboles)]
+        alphabet = [s for s in alphabet if s != '£']
+
         start_set = self.fermeture_epsilon(self.etats_initiaux)
-        
         new_states = [start_set]
         new_trans = {}
         queue = [start_set]
@@ -153,8 +177,6 @@ class Automate:
                     next_set = self.fermeture_epsilon(next_set_raw)
                     new_trans[(current_set, sym)] = next_set
                     if next_set not in new_states:
-                        # EXPLICATION DES ÉTATS COMPOSÉS
-                        print(f"      * Nouvel état composé créé : {list(next_set)}")
                         new_states.append(next_set)
                         queue.append(next_set)
 
@@ -170,26 +192,44 @@ class Automate:
         
         for (src, sym), dst in new_trans.items():
             auto_det.transitions[(mapping[src], sym)] = [mapping[dst]]
+        
+        # Affichage de la composition (Consigne Image)
+        self.afficher_composition(mapping)
+        
+        # Complétion automatique après déterminisation
+        if not auto_det.est_complet():
+            print("\nComplétion de l'automate déterministe...")
+            auto_det.completer()
+            
         return auto_det
 
-    def est_complet(self):
-        alphabet_reel = set(sym for (_, sym) in self.transitions.keys() if sym != "£")
-        if not alphabet_reel: return True
+    def est_complet(self, verbose=True):
+        # Alphabet de 'a' jusqu'à 'num_symboles'
+        alphabet = [chr(ord('a') + i) for i in range(self.num_symboles)]
+        raisons = []
+        complet = True
 
         for i in range(self.num_etats):
-            for sym in alphabet_reel:
+            for sym in alphabet:
                 if (i, sym) not in self.transitions or not self.transitions[(i, sym)]:
-                    # AJOUT PRINT EXPLICATIONS
-                    print(f"   -> Non-complet : l'état {i} n'a pas de transition pour le symbole '{sym}'.")
-                    return False
-        return True
+                    raisons.append(f"- État {i} n'a pas de transition pour '{sym}'")
+                    complet = False
 
+        if not complet and verbose:
+            print("\nL'automate n'est PAS COMPLET :")
+            for r in raisons:
+                print(r)
+        
+        return complet
+    
     def completer(self):
         if self.est_complet():
             print("L'automate est déjà complet.")
             return
     
+        # Alphabet des lettres (a, b, c...) uniquement
         alphabet_reel = sorted(list(set(sym for (_, sym) in self.transitions.keys() if sym != "£")))
+        
         poubelle = self.num_etats
         poubelle_creee = False
 
@@ -197,8 +237,6 @@ class Automate:
             for sym in alphabet_reel:
                 if (i, sym) not in self.transitions or not self.transitions[(i, sym)]:
                     if not poubelle_creee:
-                        # AJOUT PRINT EXPLICATIONS
-                        print(f"   [Action] Création d'un état poubelle (état {poubelle}) pour compléter l'automate.")
                         self.num_etats += 1
                         poubelle_creee = True
                     self.transitions[(i, sym)] = [poubelle]
@@ -206,34 +244,30 @@ class Automate:
         if poubelle_creee:
             for sym in alphabet_reel:
                 self.transitions[(poubelle, sym)] = [poubelle]
-            print(f"   -> Résultat : État poubelle {poubelle} ajouté et bouclé sur l'alphabet.")
+            print(f"État poubelle {poubelle} ajouté.")
+        
+        return self 
 
     def est_standard(self):
-        if self.num_etats_initiaux != 1: 
-            # AJOUT PRINT EXPLICATIONS
-            print(f"   -> Non-standard : il y a {self.num_etats_initiaux} états initiaux (il en faut 1 seul).")
-            return False
+        if self.num_etats_initiaux != 1: return False
         init = self.etats_initiaux[0]
-        for (etat, sym), dests in self.transitions.items():
-            if init in dests:
-                # AJOUT PRINT EXPLICATIONS
-                print(f"   -> Non-standard : l'état {etat} possède une transition '{sym}' vers l'état initial {init}.")
-                return False
-        return True
+        return not any(init in dests for dests in self.transitions.values())
 
     def standardiser(self):
         if self.est_standard():
             print("L'automate est déjà STANDARD. Opération annulée.")
             return self
         
-        # AJOUT PRINT EXPLICATIONS
-        print(f"   [Action] Création d'un nouvel état initial {self.num_etats} déconnecté de toute transition entrante.")
-
+        # 1. Créer le nouvel état initial (index = num_etats actuel)
         new_init = self.num_etats
+        
+        # 2. Identifier TOUS les symboles (y compris £)
         alphabet_complet = set(sym for (_, sym) in self.transitions.keys())
+        
         new_trans = self.transitions.copy()
         new_finaux = list(self.etats_finaux)
 
+        # 3. Le nouvel état doit avoir les mêmes sorties que TOUS les anciens initiaux
         for sym in alphabet_complet:
             targets = set()
             for e_old in self.etats_initiaux:
@@ -243,31 +277,27 @@ class Automate:
             if targets:
                 new_trans[(new_init, sym)] = list(targets)
 
+        # 4. Gérer le caractère final
+        # Si un des anciens initiaux était final, le nouveau le devient
         if any(e in self.etats_finaux for e in self.etats_initiaux):
             if new_init not in new_finaux:
                 new_finaux.append(new_init)
 
+        # 5. Mise à jour de l'objet
         self.num_etats += 1
         self.etats_initiaux = [new_init]
         self.num_etats_initiaux = 1
         self.etats_finaux = new_finaux
         self.transitions = new_trans
+        
         return self
 
-    def est_minimal(self):
-        # Ajout d'une vérification silencieuse pour le complémentaire
-        if not self.est_deterministe() or not self.est_complet():
-            return False
-        # Logique simplifiée : si Moore ne peut plus diviser, c'est minimal
-        # (Cette fonction peut être appelée par complementaire)
-        return True
+   
 
     def complementaire(self):
-        if not self.est_deterministe() or not self.est_complet():
-            print("Erreur : L'automate doit être DÉTERMINISTE et COMPLET.")
-            return None
-
-        print(f"\n   [Action] Construction du complémentaire par inversion des états finaux.")
+        # Affichage du type d'automate source (Exigence Image)
+        type_source = "AFDCM (Minimal)" if self.est_minimal() else "AFDC (Déterministe Complet)"
+        print(f"\nConstruction du complémentaire à partir de : {type_source}")
 
         auto_comp = Automate()
         auto_comp.num_symboles = self.num_symboles
@@ -276,20 +306,30 @@ class Automate:
         auto_comp.num_etats_initiaux = self.num_etats_initiaux
         auto_comp.transitions = self.transitions.copy()
 
-        nouveaux_finaux = [i for i in range(self.num_etats) if i not in self.etats_finaux]
-        auto_comp.etats_finaux = nouveaux_finaux
-        auto_comp.num_etats_finaux = len(nouveaux_finaux)
+        # Inversion des états finaux
+        tous_etats = set(range(self.num_etats))
+        anciens_finaux = set(self.etats_finaux)
+        auto_comp.etats_finaux = list(tous_etats - anciens_finaux)
+        auto_comp.num_etats_finaux = len(auto_comp.etats_finaux)
         
+        print("Automate complémentaire généré avec succès.")
         return auto_comp
+    
+    def est_minimal(self):
+        """Vérifie si l'automate a été marqué comme réduit par l'algorithme de Moore."""
+        return hasattr(self, 'is_minimized') and self.is_minimized
 
     def minimiser(self):
+        # 1. SÉCURITÉ : Moore ne s'applique que sur un automate déterministe et complet
         if not self.est_deterministe() or not self.est_complet():
             print("⚠️ L'automate doit être DÉTERMINISTE et COMPLET pour être minimisé.")
             return self
 
+        # On définit l'alphabet de travail en excluant explicitement epsilon (£)
         alphabet = [chr(ord('a') + i) for i in range(self.num_symboles)]
         alphabet = [sym for sym in alphabet if sym != "£"]
         
+        # 2. Partition initiale : Terminaux (T) et Non-Terminaux (NT)
         etats_T = set(self.etats_finaux)
         etats_NT = set(range(self.num_etats)) - etats_T
         
@@ -309,8 +349,10 @@ class Automate:
                 affichage.append(f"{label}:{sorted(list(group['etats']))}")
             print(f"P{n} = [{', '.join(affichage)}]")
 
+        print("\n--- Phase de Minimisation (Algorithme de Moore) ---")
         afficher_P(numero_etape, partitions_info)
 
+        # 3. BOUCLE DE MOORE
         while True:
             nouvelles_partitions_info = []
             print(f"\nAnalyse des transitions pour P{numero_etape} :")
@@ -321,9 +363,11 @@ class Automate:
                     comportement = []
                     labels_trans = []
                     for s in alphabet:
+                        # On prend le premier état d'arrivée (car déterministe)
                         dest_list = self.transitions.get((etat, s), [])
                         dest = dest_list[0] if dest_list else -1
                         
+                        # Trouver le label du groupe de destination
                         dest_label = "???"
                         tmp_t, tmp_nt = 1, 1
                         for g_info in partitions_info:
@@ -342,9 +386,11 @@ class Automate:
                     if key not in subgroups: subgroups[key] = set()
                     subgroups[key].add(etat)
                 
+                # On conserve le type (T ou NT) du groupe parent
                 for sub in subgroups.values():
                     nouvelles_partitions_info.append({'type': group['type'], 'etats': sub})
             
+            # Si le nombre de groupes n'a pas changé, on a fini
             if len(nouvelles_partitions_info) == len(partitions_info):
                 break
             
@@ -352,8 +398,10 @@ class Automate:
             numero_etape += 1
             afficher_P(numero_etape, partitions_info)
 
+        # 4. RECONSTRUCTION
         if len(partitions_info) == self.num_etats:
             print("\n✅ L'automate est déjà minimal.")
+            self.is_minimized = True
             return self
 
         auto_min = Automate()
@@ -368,39 +416,58 @@ class Automate:
             if group['type'] == 'T': c_t += 1
             else: c_nt += 1
             
-            print(f"  Nouvel état {i} ({label}) <-- {sorted(list(group['etats']))}")
+            print(f"  Nouvel état {i} ({label}) <-- regroupe : {sorted(list(group['etats']))}")
             for etat in group['etats']:
                 correspondance[etat] = i
 
+        # Paramètres de l'automate minimal
         auto_min.etats_initiaux = list(set(correspondance[e] for e in self.etats_initiaux))
         auto_min.num_etats_initiaux = len(auto_min.etats_initiaux)
         auto_min.etats_finaux = list(set(correspondance[e] for e in self.etats_finaux))
         auto_min.num_etats_finaux = len(auto_min.etats_finaux)
 
+        # Reconstruction des transitions
         for i, group in enumerate(partitions_info):
             rep = list(group['etats'])[0]
             for s in alphabet:
                 if (rep, s) in self.transitions:
-                    auto_min.transitions[(i, s)] = [correspondance[self.transitions[(rep, s)][0]]]
+                    dest_origine = self.transitions[(rep, s)][0]
+                    auto_min.transitions[(i, s)] = [correspondance[dest_origine]]
 
+        auto_min.is_minimized = True
+        print(f"✅ Minimisation terminée : {auto_min.num_etats} états restants.")
         return auto_min
     
     def reconnaitre_mot(self, mot):
-        currents = self.fermeture_epsilon(self.etats_initiaux)
-        for char in mot:
-            next_step = set()
-            for e in currents:
-                next_step.update(self.transitions.get((e, char), []))
-            currents = self.fermeture_epsilon(next_step)
-            if not currents: 
-                return False
+        """Parcours l'automate pour vérifier si le mot est accepté."""
+        # On commence par la fermeture-epsilon des états initiaux
+        etats_actuels = set(self.fermeture_epsilon(self.etats_initiaux))
         
-        return any(e in self.etats_finaux for e in currents)
+        # Cas du mot vide (noté souvent £ dans les tests, mais "" en Python)
+        if mot == "" or mot == "£":
+            return any(e in self.etats_finaux for e in etats_actuels)
+
+        for symbole in mot:
+            prochains_etats = set()
+            for etat in etats_actuels:
+                if (etat, symbole) in self.transitions:
+                    # On ajoute les destinations + leur fermeture epsilon
+                    destinations = self.transitions[(etat, symbole)]
+                    prochains_etats.update(self.fermeture_epsilon(destinations))
+            
+            etats_actuels = prochains_etats
+            if not etats_actuels: # Si on est bloqué, le mot est refusé
+                return False
+
+        # Le mot est accepté si un des états atteints est final
+        return any(e in self.etats_finaux for e in etats_actuels)
     
     def automate_epsilon(self):
         return any(sym == "£" for (_, sym) in self.transitions.keys())
     
+    
     def fermeture_epsilon(self, etats):
+        """Calcule l'ensemble des états accessibles via des transitions £."""
         fermeture = set(etats)
         pile = list(etats)
         while pile:
@@ -418,4 +485,3 @@ class Automate:
             menu_principal()
         except ImportError:
             print("Erreur : Assurez-vous que main.py est dans le même dossier.")
-#fin 
