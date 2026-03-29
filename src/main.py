@@ -5,19 +5,32 @@ def menu_principal():
     while True:
         # --- 1. SÉLECTION ---
         print("\n" + "═"*50)
-        choix = input("Quel automate voulez-vous consulter? (1-44) ou 'q' pour quitter : ")
-
+        choix = input("Quel automate (1-44) ou 'q' : ")
         if choix.lower() == 'q': break
-        nom_fichier = f"./tests/automate{choix}.txt"
 
-        if not os.path.exists(nom_fichier):
-            print("Fichier introuvable.")
+        # On teste tous les chemins possibles selon où l'utilisateur a lancé le terminal
+        chemins_possibles = [
+            f"tests/automate{choix}.txt",      # Si on est dans /AUTOMATES
+            f"../tests/automate{choix}.txt",   # Si on est dans /src
+            f"automate{choix}.txt"             # Si le fichier est au même endroit
+        ]
+
+        nom_fichier = None
+        for p in chemins_possibles:
+            if os.path.exists(p):
+                nom_fichier = p
+                break
+
+        if not nom_fichier:
+            print(f"❌ Erreur : Impossible de trouver 'automate{choix}.txt'")
+            # Petit debug pour t'aider :
+            print(f"Dossier actuel : {os.getcwd()}") 
             continue
 
         mon_automate = Automate()
         mon_automate.lire_fichier(nom_fichier)
         
-        # --- 2. ÉTAT DES LIEUX AUTOMATIQUE ---
+        
         # On affiche les propriétés tout de suite pour savoir où on en est
         while True:
             print("\n" + "─"*30)
