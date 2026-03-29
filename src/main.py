@@ -59,7 +59,7 @@ def menu_principal():
             if mon_automate.est_deterministe() :
                 print("L'automate est déterministe, nous pouvons continuer")
             elif not mon_automate.est_deterministe() :
-                det_min_choix = input("L'automate n'est pas déterministe, souhaitez vous déterminiser cet automate ? (oui ou non" )
+                det_min_choix = input("L'automate n'est pas déterministe, souhaitez vous déterminiser cet automate ? (oui ou non) " )
                 if det_min_choix.lower() == 'oui':
                     mon_automate = mon_automate.determiniser()
                     print(" C'est fait !")
@@ -87,16 +87,15 @@ def menu_principal():
         choix_recherche=input("Souhaitez vous rechercher un mot dans l'automate ? (oui ou non )")
 
         if choix_recherche.lower() == 'oui':
-            while True:
-                mot = input("Entrez un mot à tester ou 'c' pour changer d'automate : ")
+            mot = input("Entrez un mot à tester ou 'c' pour changer d'automate : ")
+            resultat = mon_automate.reconnaitre_mot(mot)
+            if resultat:
+                print(f" Le mot '{mot}' est reconnu.")
+            else:
+                print(f" Le mot '{mot}' n'est pas reconnu.")
 
-                if mot.lower() == 'c':
-                    break
-                resultat = mon_automate.reconnaitre_mots(mot)
-                if resultat:
-                    print(f" Le mot '{mot}' est reconnu.")
-                else:
-                    print(f" Le mot '{mot}' n'est pas reconnu.")
+            if mot.lower() == 'c':
+                continue
 
 
         else :
