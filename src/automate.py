@@ -13,7 +13,6 @@ class Automate:
 
     def lire_fichier(self, chemin_fichier):
         try:
-           
             if not os.path.exists(chemin_fichier) and os.path.exists(f"tests/{chemin_fichier}"):
                 chemin_fichier = f"tests/{chemin_fichier}"
 
@@ -22,9 +21,11 @@ class Automate:
 
             if not automate: return
 
-            self.num_symboles = int(automate[0])
+            # On lit le nombre de symboles brut du fichier
+            num_brut_symboles = int(automate[0])
             self.num_etats = int(automate[1])
 
+            # ... (lecture des états initiaux et finaux identique)
             ligne_init = automate[2].split()
             self.num_etats_initiaux = int(ligne_init[0])
             self.etats_initiaux = [int(x) for x in ligne_init[1:]]
@@ -36,21 +37,34 @@ class Automate:
             self.num_transitions = int(automate[4])
             self.transitions = {}
 
+            a_un_epsilon = False
             for i in range(5, 5 + self.num_transitions):
                 if i < len(automate):
                     p = automate[i].split()
                     if len(p) >= 3:
                         deb, sym, fin = int(p[0]), p[1], int(p[2])
                         
-                        # Solution de l'epsilon "caché"
                         if sym == '£' or sym == 'epsilon': 
                             sym = '£'
+                            a_un_epsilon = True
                         
                         if (deb, sym) not in self.transitions:
                             self.transitions[(deb, sym)] = []
                         if fin not in self.transitions[(deb, sym)]:
                             self.transitions[(deb, sym)].append(fin)
-            print(f"Fichier '{chemin_fichier}' chargé.")
+
+            # --- LOGIQUE DE CORRECTION DE L'ALPHABET ---
+            # Si l'automate est asynchrone (£ présent) ET que le fichier 
+            # semble avoir compté £ comme un symbole (ex: num=3 pour a,b,£)
+            if a_un_epsilon:
+                # On considère que num_symboles ne représente que les lettres réelles
+                # Si le fichier a inclus £ dans le compte, on rectifie pour l'affichage
+                self.num_symboles = num_brut_symboles - 1 if num_brut_symboles > 0 else 0
+            else:
+                self.num_symboles = num_brut_symboles
+
+            print(f"Fichier '{chemin_fichier}' chargé (Alphabet de base : {self.num_symboles} lettres).")
+            
         except Exception as e:
             print(f"Erreur lecture : {e}")
 
@@ -76,7 +90,7 @@ class Automate:
         
         # 2. Utilisation de la fonction est_asynchrone pour le mot vide
         if self.est_asynchrone():
-            alphabet_final.append("£")
+            alphabet_final = [chr(ord('a') + i) for i in range(self.num_symboles)]
         
         # Cas de sécurité si l'automate est vide
         if not alphabet_final: 
@@ -218,11 +232,7 @@ class Automate:
         
         # Affichage de la composition 
         self.afficher_composition(mapping)
-        
-        # Complétion automatique après déterminisation
-        if not auto_det.est_complet():
-            print("\nComplétion de l'automate déterministe...")
-            auto_det.completer()
+    
             
         return auto_det
 
