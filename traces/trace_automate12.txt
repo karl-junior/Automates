@@ -1,0 +1,146 @@
+Fichier 'tests\automate12.txt' chargé (Alphabet de base : 4 lettres).
+============================================================
+       RAPPORT COMPLET : AUTOMATE N°12
+============================================================
+
+### 0. ÉTAT INITIAL
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+    0 | -- | 0  | -- | 1  | 
+ES  1 | 1  | -- | 0  | -- | 
+=============================
+
+Propriétés :
+ - Déterministe : True
+ - Standard     : False
+ - Complet      : False
+ - Asynchrone   : False
+
+### 1. TESTS DE RECONNAISSANCE (ORIGINE)
+ - Mot '£': Accepté
+ - Mot 'a': Accepté
+ - Mot 'b': Refusé
+ - Mot 'aa': Accepté
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Accepté
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+### 2. STANDARDISATION
+Fichier 'tests\automate12.txt' chargé (Alphabet de base : 4 lettres).
+
+L'automate n'est PAS STANDARD :
+- L'état initial 1 est la cible d'une transition depuis l'état 0 avec 'd'.
+Création d'un nouvel état initial 2 déconnecté de toute transition entrante.
+
+--- Phase de Standardisation ---
+  Action : Création d'un nouvel état initial unique (État 2).
+  Objectif : Garantir qu'aucune transition ne revient vers l'entrée.
+  Action : Copie des transitions des anciens initiaux [1] vers l'état 2.
+  Note : Un ancien état initial était final, donc l'état 2 devient FINAL (acceptation du mot vide).
+  Résultat : L'automate est désormais standardisé.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+    0 | -- | 0  | -- | 1  | 
+S   1 | 1  | -- | 0  | -- | 
+ES  2 | 1  | -- | 0  | -- | 
+=============================
+
+
+### 3. DÉTERMINISATION
+
+L'automate est déjà DÉTERMINISTE.
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 1 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'd'
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 1 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'd'
+État poubelle 2 ajouté.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+    0 | 2  | 0  | 2  | 1  | 
+ES  1 | 1  | 2  | 0  | 2  | 
+    2 | 2  | 2  | 2  | 2  | 
+=============================
+
+
+### 4. COMPLÉTION
+L'automate est déjà complet.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+    0 | 2  | 0  | 2  | 1  | 
+ES  1 | 1  | 2  | 0  | 2  | 
+    2 | 2  | 2  | 2  | 2  | 
+=============================
+
+
+### 5. MINIMISATION (AFD COMPLET -> AFDM)
+
+--- Phase de Minimisation (Algorithme de Moore) ---
+P0 = [NT1:[0, 2], T1:[1]]
+
+Analyse des transitions pour P0 :
+  État 0 : (a->NT1) (b->NT1) (c->NT1) (d->T1)
+  État 2 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 1 : (a->T1) (b->NT1) (c->NT1) (d->NT1)
+P1 = [NT1:[0], NT2:[2], T1:[1]]
+
+Analyse des transitions pour P1 :
+  État 0 : (a->NT2) (b->NT1) (c->NT2) (d->T1)
+  État 2 : (a->NT2) (b->NT2) (c->NT2) (d->NT2)
+  État 1 : (a->T1) (b->NT2) (c->NT1) (d->NT2)
+
+L'automate est déjà minimal.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+    0 | 2  | 0  | 2  | 1  | 
+ES  1 | 1  | 2  | 0  | 2  | 
+    2 | 2  | 2  | 2  | 2  | 
+=============================
+
+
+### 6. AUTOMATE COMPLÉMENTAIRE (Basé sur l'AFDM)
+
+Construction du complémentaire à partir de : AFDCM (Minimal)
+Automate complémentaire généré avec succès.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+S   0 | 2  | 0  | 2  | 1  | 
+E   1 | 1  | 2  | 0  | 2  | 
+S   2 | 2  | 2  | 2  | 2  | 
+=============================
+
+
+### 7. TESTS DE RECONNAISSANCE (SUR AUTOMATE MINIMAL)
+ - Mot '£': Accepté
+ - Mot 'a': Accepté
+ - Mot 'b': Refusé
+ - Mot 'aa': Accepté
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Accepté
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+============================================================
+FIN DU RAPPORT

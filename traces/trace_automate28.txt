@@ -1,0 +1,195 @@
+Fichier 'tests\automate28.txt' chargé (Alphabet de base : 1 lettres).
+============================================================
+       RAPPORT COMPLET : AUTOMATE N°28
+============================================================
+
+### 0. ÉTAT INITIAL
+
+==================== TABLEAU DE TRANSITION ====================
+       |  a  | 
+---------------
+S   0 |  4  | 
+E   1 | 2,4 | 
+    2 |  3  | 
+S   3 |  2  | 
+    4 |  5  | 
+    5 |  0  | 
+===============
+
+Propriétés :
+ - Déterministe : False
+ - Standard     : True
+ - Complet      : True
+ - Asynchrone   : False
+
+### 1. TESTS DE RECONNAISSANCE (ORIGINE)
+ - Mot '£': Refusé
+ - Mot 'a': Refusé
+ - Mot 'b': Refusé
+ - Mot 'aa': Accepté
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Accepté
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+### 2. STANDARDISATION
+Fichier 'tests\automate28.txt' chargé (Alphabet de base : 1 lettres).
+L'automate est déjà STANDARD. Opération annulée.
+
+==================== TABLEAU DE TRANSITION ====================
+       |  a  | 
+---------------
+S   0 |  4  | 
+E   1 | 2,4 | 
+    2 |  3  | 
+S   3 |  2  | 
+    4 |  5  | 
+    5 |  0  | 
+===============
+
+
+### 3. DÉTERMINISATION
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Transitions multiples pour les couples : (1, a).
+
+--- Phase de Déterminisation (Sous-ensembles) ---
+  Transition : [1] --(a)--> [2, 4]
+  Transition : [2, 4] --(a)--> [3, 5]
+  Transition : [3, 5] --(a)--> [0, 2]
+  Transition : [0, 2] --(a)--> [3, 4]
+  Transition : [3, 4] --(a)--> [2, 5]
+  Transition : [2, 5] --(a)--> [0, 3]
+  Transition : [0, 3] --(a)--> [2, 4]
+
+Table de correspondance des états composés (AF -> AFDC) :
+  État 0 correspond à : {1}
+  État 1 correspond à : {2.4}
+  État 2 correspond à : {3.5}
+  État 3 correspond à : {0.2}
+  État 4 correspond à : {3.4}
+  État 5 correspond à : {2.5}
+  État 6 correspond à : {0.3}
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+E   0 | 1  | 
+    1 | 2  | 
+S   2 | 3  | 
+S   3 | 4  | 
+S   4 | 5  | 
+    5 | 6  | 
+S   6 | 1  | 
+==============
+
+
+### 4. COMPLÉTION
+L'automate est déjà complet.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+E   0 | 1  | 
+    1 | 2  | 
+S   2 | 3  | 
+S   3 | 4  | 
+S   4 | 5  | 
+    5 | 6  | 
+S   6 | 1  | 
+==============
+
+
+### 5. MINIMISATION (AFD COMPLET -> AFDM)
+
+--- Phase de Minimisation (Algorithme de Moore) ---
+P0 = [NT1:[0, 1, 5], T1:[2, 3, 4, 6]]
+
+Analyse des transitions pour P0 :
+  État 0 : (a->NT1)
+  État 1 : (a->T1)
+  État 5 : (a->T1)
+  État 2 : (a->T1)
+  État 3 : (a->T1)
+  État 4 : (a->NT1)
+  État 6 : (a->NT1)
+P1 = [NT1:[0], NT2:[1, 5], T1:[2, 3], T2:[4, 6]]
+
+Analyse des transitions pour P1 :
+  État 0 : (a->NT2)
+  État 1 : (a->T1)
+  État 5 : (a->T2)
+  État 2 : (a->T1)
+  État 3 : (a->T2)
+  État 4 : (a->NT2)
+  État 6 : (a->NT2)
+P2 = [NT1:[0], NT2:[1], NT3:[5], T1:[2], T2:[3], T3:[4, 6]]
+
+Analyse des transitions pour P2 :
+  État 0 : (a->NT2)
+  État 1 : (a->T1)
+  État 5 : (a->T3)
+  État 2 : (a->T2)
+  État 3 : (a->T3)
+  État 4 : (a->NT3)
+  État 6 : (a->NT2)
+P3 = [NT1:[0], NT2:[1], NT3:[5], T1:[2], T2:[3], T3:[4], T4:[6]]
+
+Analyse des transitions pour P3 :
+  État 0 : (a->NT2)
+  État 1 : (a->T1)
+  État 5 : (a->T4)
+  État 2 : (a->T2)
+  État 3 : (a->T3)
+  État 4 : (a->NT3)
+  État 6 : (a->NT2)
+
+L'automate est déjà minimal.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+E   0 | 1  | 
+    1 | 2  | 
+S   2 | 3  | 
+S   3 | 4  | 
+S   4 | 5  | 
+    5 | 6  | 
+S   6 | 1  | 
+==============
+
+
+### 6. AUTOMATE COMPLÉMENTAIRE (Basé sur l'AFDM)
+
+Construction du complémentaire à partir de : AFDCM (Minimal)
+Automate complémentaire généré avec succès.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+ES  0 | 1  | 
+S   1 | 2  | 
+    2 | 3  | 
+    3 | 4  | 
+    4 | 5  | 
+S   5 | 6  | 
+    6 | 1  | 
+==============
+
+
+### 7. TESTS DE RECONNAISSANCE (SUR AUTOMATE MINIMAL)
+ - Mot '£': Refusé
+ - Mot 'a': Refusé
+ - Mot 'b': Refusé
+ - Mot 'aa': Accepté
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Accepté
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+============================================================
+FIN DU RAPPORT

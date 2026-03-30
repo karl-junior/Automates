@@ -1,0 +1,212 @@
+Fichier 'tests\automate20.txt' chargé (Alphabet de base : 4 lettres).
+============================================================
+       RAPPORT COMPLET : AUTOMATE N°20
+============================================================
+
+### 0. ÉTAT INITIAL
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+E   0 | -- | -- | -- | 5  | 
+E   1 | 2  | -- | -- | -- | 
+    2 | -- | 3  | -- | -- | 
+    3 | -- | -- | 4  | -- | 
+    4 | -- | -- | -- | 5  | 
+S   5 | -- | -- | -- | -- | 
+E   6 | 2  | -- | -- | -- | 
+E   7 | -- | 3  | -- | -- | 
+E   8 | -- | -- | 4  | -- | 
+=============================
+
+Propriétés :
+ - Déterministe : False
+ - Standard     : False
+ - Complet      : False
+ - Asynchrone   : False
+
+### 1. TESTS DE RECONNAISSANCE (ORIGINE)
+ - Mot '£': Refusé
+ - Mot 'a': Refusé
+ - Mot 'b': Refusé
+ - Mot 'aa': Refusé
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Refusé
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+### 2. STANDARDISATION
+Fichier 'tests\automate20.txt' chargé (Alphabet de base : 4 lettres).
+
+L'automate n'est PAS STANDARD :
+- Il possède 5 états initiaux (il en faut exactement 1).
+Création d'un nouvel état initial 9 déconnecté de toute transition entrante.
+
+--- Phase de Standardisation ---
+  Action : Création d'un nouvel état initial unique (État 9).
+  Objectif : Garantir qu'aucune transition ne revient vers l'entrée.
+  Action : Copie des transitions des anciens initiaux [0, 1, 6, 7, 8] vers l'état 9.
+  Résultat : L'automate est désormais standardisé.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+    0 | -- | -- | -- | 5  | 
+    1 | 2  | -- | -- | -- | 
+    2 | -- | 3  | -- | -- | 
+    3 | -- | -- | 4  | -- | 
+    4 | -- | -- | -- | 5  | 
+S   5 | -- | -- | -- | -- | 
+    6 | 2  | -- | -- | -- | 
+    7 | -- | 3  | -- | -- | 
+    8 | -- | -- | 4  | -- | 
+E   9 | 2  | 3  | 4  | 5  | 
+=============================
+
+
+### 3. DÉTERMINISATION
+
+L'automate n'est PAS déterministe pour les raisons suivantes :
+- Il possède 5 états initiaux, au lieu d'un seul.
+
+--- Phase de Déterminisation (Sous-ensembles) ---
+  Transition : [0, 1, 6, 7, 8] --(a)--> [2]
+  Transition : [0, 1, 6, 7, 8] --(b)--> [3]
+  Transition : [0, 1, 6, 7, 8] --(c)--> [4]
+  Transition : [0, 1, 6, 7, 8] --(d)--> [5]
+  Transition : [2] --(b)--> [3]
+  Transition : [3] --(c)--> [4]
+  Transition : [4] --(d)--> [5]
+
+Table de correspondance des états composés (AF -> AFDC) :
+  État 0 correspond à : {0.1.6.7.8}
+  État 1 correspond à : {2}
+  État 2 correspond à : {3}
+  État 3 correspond à : {4}
+  État 4 correspond à : {5}
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+E   0 | 1  | 2  | 3  | 4  | 
+    1 | -- | 2  | -- | -- | 
+    2 | -- | -- | 3  | -- | 
+    3 | -- | -- | -- | 4  | 
+S   4 | -- | -- | -- | -- | 
+=============================
+
+
+### 4. COMPLÉTION
+
+L'automate n'est PAS COMPLET :
+- État 1 n'a pas de transition pour 'a'
+- État 1 n'a pas de transition pour 'd'
+- État 2 n'a pas de transition pour 'a'
+- État 2 n'a pas de transition pour 'b'
+- État 2 n'a pas de transition pour 'd'
+- État 3 n'a pas de transition pour 'a'
+- État 3 n'a pas de transition pour 'b'
+- État 4 n'a pas de transition pour 'a'
+- État 4 n'a pas de transition pour 'b'
+- État 4 n'a pas de transition pour 'd'
+État poubelle 5 ajouté.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+E   0 | 1  | 2  | 3  | 4  | 
+    1 | 5  | 2  | 5  | 5  | 
+    2 | 5  | 5  | 3  | 5  | 
+    3 | 5  | 5  | 5  | 4  | 
+S   4 | 5  | 5  | 5  | 5  | 
+    5 | 5  | 5  | 5  | 5  | 
+=============================
+
+
+### 5. MINIMISATION (AFD COMPLET -> AFDM)
+
+--- Phase de Minimisation (Algorithme de Moore) ---
+P0 = [NT1:[0, 1, 2, 3, 5], T1:[4]]
+
+Analyse des transitions pour P0 :
+  État 0 : (a->NT1) (b->NT1) (c->NT1) (d->T1)
+  État 1 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 2 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 3 : (a->NT1) (b->NT1) (c->NT1) (d->T1)
+  État 5 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 4 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+P1 = [NT1:[0, 3], NT2:[1, 2, 5], T1:[4]]
+
+Analyse des transitions pour P1 :
+  État 0 : (a->NT2) (b->NT2) (c->NT1) (d->T1)
+  État 3 : (a->NT2) (b->NT2) (c->NT2) (d->T1)
+  État 1 : (a->NT2) (b->NT2) (c->NT2) (d->NT2)
+  État 2 : (a->NT2) (b->NT2) (c->NT1) (d->NT2)
+  État 5 : (a->NT2) (b->NT2) (c->NT2) (d->NT2)
+  État 4 : (a->NT2) (b->NT2) (c->NT2) (d->NT2)
+P2 = [NT1:[0], NT2:[3], NT3:[1, 5], NT4:[2], T1:[4]]
+
+Analyse des transitions pour P2 :
+  État 0 : (a->NT3) (b->NT4) (c->NT2) (d->T1)
+  État 3 : (a->NT3) (b->NT3) (c->NT3) (d->T1)
+  État 1 : (a->NT3) (b->NT4) (c->NT3) (d->NT3)
+  État 5 : (a->NT3) (b->NT3) (c->NT3) (d->NT3)
+  État 2 : (a->NT3) (b->NT3) (c->NT2) (d->NT3)
+  État 4 : (a->NT3) (b->NT3) (c->NT3) (d->NT3)
+P3 = [NT1:[0], NT2:[3], NT3:[1], NT4:[5], NT5:[2], T1:[4]]
+
+Analyse des transitions pour P3 :
+  État 0 : (a->NT3) (b->NT5) (c->NT2) (d->T1)
+  État 3 : (a->NT4) (b->NT4) (c->NT4) (d->T1)
+  État 1 : (a->NT4) (b->NT5) (c->NT4) (d->NT4)
+  État 5 : (a->NT4) (b->NT4) (c->NT4) (d->NT4)
+  État 2 : (a->NT4) (b->NT4) (c->NT2) (d->NT4)
+  État 4 : (a->NT4) (b->NT4) (c->NT4) (d->NT4)
+
+L'automate est déjà minimal.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+E   0 | 1  | 2  | 3  | 4  | 
+    1 | 5  | 2  | 5  | 5  | 
+    2 | 5  | 5  | 3  | 5  | 
+    3 | 5  | 5  | 5  | 4  | 
+S   4 | 5  | 5  | 5  | 5  | 
+    5 | 5  | 5  | 5  | 5  | 
+=============================
+
+
+### 6. AUTOMATE COMPLÉMENTAIRE (Basé sur l'AFDM)
+
+Construction du complémentaire à partir de : AFDCM (Minimal)
+Automate complémentaire généré avec succès.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+ES  0 | 1  | 2  | 3  | 4  | 
+S   1 | 5  | 2  | 5  | 5  | 
+S   2 | 5  | 5  | 3  | 5  | 
+S   3 | 5  | 5  | 5  | 4  | 
+    4 | 5  | 5  | 5  | 5  | 
+S   5 | 5  | 5  | 5  | 5  | 
+=============================
+
+
+### 7. TESTS DE RECONNAISSANCE (SUR AUTOMATE MINIMAL)
+ - Mot '£': Refusé
+ - Mot 'a': Refusé
+ - Mot 'b': Refusé
+ - Mot 'aa': Refusé
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Refusé
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+============================================================
+FIN DU RAPPORT

@@ -1,0 +1,113 @@
+Fichier 'tests\automate8.txt' chargé (Alphabet de base : 1 lettres).
+============================================================
+       RAPPORT COMPLET : AUTOMATE N°8
+============================================================
+
+### 0. ÉTAT INITIAL
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+S   0 | 0  | 
+E   1 | 0  | 
+==============
+
+Propriétés :
+ - Déterministe : True
+ - Standard     : True
+ - Complet      : True
+ - Asynchrone   : False
+
+### 1. TESTS DE RECONNAISSANCE (ORIGINE)
+ - Mot '£': Refusé
+ - Mot 'a': Accepté
+ - Mot 'b': Refusé
+ - Mot 'aa': Accepté
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Accepté
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+### 2. STANDARDISATION
+Fichier 'tests\automate8.txt' chargé (Alphabet de base : 1 lettres).
+L'automate est déjà STANDARD. Opération annulée.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+S   0 | 0  | 
+E   1 | 0  | 
+==============
+
+
+### 3. DÉTERMINISATION
+
+L'automate est déjà DÉTERMINISTE.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+S   0 | 0  | 
+E   1 | 0  | 
+==============
+
+
+### 4. COMPLÉTION
+L'automate est déjà complet.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+S   0 | 0  | 
+E   1 | 0  | 
+==============
+
+
+### 5. MINIMISATION (AFD COMPLET -> AFDM)
+
+--- Phase de Minimisation (Algorithme de Moore) ---
+P0 = [NT1:[1], T1:[0]]
+
+Analyse des transitions pour P0 :
+  État 1 : (a->T1)
+  État 0 : (a->T1)
+
+L'automate est déjà minimal.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+S   0 | 0  | 
+E   1 | 0  | 
+==============
+
+
+### 6. AUTOMATE COMPLÉMENTAIRE (Basé sur l'AFDM)
+
+Construction du complémentaire à partir de : AFDCM (Minimal)
+Automate complémentaire généré avec succès.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+    0 | 0  | 
+ES  1 | 0  | 
+==============
+
+
+### 7. TESTS DE RECONNAISSANCE (SUR AUTOMATE MINIMAL)
+ - Mot '£': Refusé
+ - Mot 'a': Accepté
+ - Mot 'b': Refusé
+ - Mot 'aa': Accepté
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Accepté
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+============================================================
+FIN DU RAPPORT

@@ -1,0 +1,121 @@
+Erreur lecture : invalid literal for int() with base 10: 'b'
+============================================================
+       RAPPORT COMPLET : AUTOMATE N°27
+============================================================
+
+### 0. ÉTAT INITIAL
+
+==================== TABLEAU DE TRANSITION ====================
+       |    | 
+--------------
+S   0 | -- | 
+E   1 | -- | 
+    2 | -- | 
+==============
+
+Propriétés :
+ - Déterministe : True
+ - Standard     : True
+ - Complet      : True
+ - Asynchrone   : False
+
+### 1. TESTS DE RECONNAISSANCE (ORIGINE)
+ - Mot '£': Refusé
+ - Mot 'a': Refusé
+ - Mot 'b': Refusé
+ - Mot 'aa': Refusé
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Refusé
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+### 2. STANDARDISATION
+Erreur lecture : invalid literal for int() with base 10: 'b'
+L'automate est déjà STANDARD. Opération annulée.
+
+==================== TABLEAU DE TRANSITION ====================
+       |    | 
+--------------
+S   0 | -- | 
+E   1 | -- | 
+    2 | -- | 
+==============
+
+
+### 3. DÉTERMINISATION
+
+L'automate est déjà DÉTERMINISTE.
+
+==================== TABLEAU DE TRANSITION ====================
+       |    | 
+--------------
+S   0 | -- | 
+E   1 | -- | 
+    2 | -- | 
+==============
+
+
+### 4. COMPLÉTION
+L'automate est déjà complet.
+
+==================== TABLEAU DE TRANSITION ====================
+       |    | 
+--------------
+S   0 | -- | 
+E   1 | -- | 
+    2 | -- | 
+==============
+
+
+### 5. MINIMISATION (AFD COMPLET -> AFDM)
+
+--- Phase de Minimisation (Algorithme de Moore) ---
+P0 = [NT1:[1, 2], T1:[0]]
+
+Analyse des transitions pour P0 :
+  État 1 : 
+  État 2 : 
+  État 0 : 
+
+Table de correspondance (AFDC -> AFDCM) :
+  Nouvel état 0 (NT1) <-- regroupe : [1, 2]
+  Nouvel état 1 (T1) <-- regroupe : [0]
+Minimisation terminée : 2 états restants.
+
+==================== TABLEAU DE TRANSITION ====================
+       |    | 
+--------------
+E   0 | -- | 
+S   1 | -- | 
+==============
+
+
+### 6. AUTOMATE COMPLÉMENTAIRE (Basé sur l'AFDM)
+
+Construction du complémentaire à partir de : AFDCM (Minimal)
+Automate complémentaire généré avec succès.
+
+==================== TABLEAU DE TRANSITION ====================
+       |    | 
+--------------
+ES  0 | -- | 
+    1 | -- | 
+==============
+
+
+### 7. TESTS DE RECONNAISSANCE (SUR AUTOMATE MINIMAL)
+ - Mot '£': Refusé
+ - Mot 'a': Refusé
+ - Mot 'b': Refusé
+ - Mot 'aa': Refusé
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Refusé
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+============================================================
+FIN DU RAPPORT

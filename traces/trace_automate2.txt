@@ -1,0 +1,117 @@
+Fichier 'tests\automate2.txt' chargé (Alphabet de base : 1 lettres).
+============================================================
+       RAPPORT COMPLET : AUTOMATE N°2
+============================================================
+
+### 0. ÉTAT INITIAL
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+ES  0 | 0  | 
+==============
+
+Propriétés :
+ - Déterministe : True
+ - Standard     : False
+ - Complet      : True
+ - Asynchrone   : False
+
+### 1. TESTS DE RECONNAISSANCE (ORIGINE)
+ - Mot '£': Accepté
+ - Mot 'a': Accepté
+ - Mot 'b': Refusé
+ - Mot 'aa': Accepté
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Accepté
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+### 2. STANDARDISATION
+Fichier 'tests\automate2.txt' chargé (Alphabet de base : 1 lettres).
+
+L'automate n'est PAS STANDARD :
+- L'état initial 0 est la cible d'une transition depuis l'état 0 avec 'a'.
+Création d'un nouvel état initial 1 déconnecté de toute transition entrante.
+
+--- Phase de Standardisation ---
+  Action : Création d'un nouvel état initial unique (État 1).
+  Objectif : Garantir qu'aucune transition ne revient vers l'entrée.
+  Action : Copie des transitions des anciens initiaux [0] vers l'état 1.
+  Note : Un ancien état initial était final, donc l'état 1 devient FINAL (acceptation du mot vide).
+  Résultat : L'automate est désormais standardisé.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+S   0 | 0  | 
+ES  1 | 0  | 
+==============
+
+
+### 3. DÉTERMINISATION
+
+L'automate est déjà DÉTERMINISTE.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+ES  0 | 0  | 
+==============
+
+
+### 4. COMPLÉTION
+L'automate est déjà complet.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+ES  0 | 0  | 
+==============
+
+
+### 5. MINIMISATION (AFD COMPLET -> AFDM)
+
+--- Phase de Minimisation (Algorithme de Moore) ---
+P0 = [T1:[0]]
+
+Analyse des transitions pour P0 :
+  État 0 : (a->T1)
+
+L'automate est déjà minimal.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+ES  0 | 0  | 
+==============
+
+
+### 6. AUTOMATE COMPLÉMENTAIRE (Basé sur l'AFDM)
+
+Construction du complémentaire à partir de : AFDCM (Minimal)
+Automate complémentaire généré avec succès.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | 
+--------------
+E   0 | 0  | 
+==============
+
+
+### 7. TESTS DE RECONNAISSANCE (SUR AUTOMATE MINIMAL)
+ - Mot '£': Accepté
+ - Mot 'a': Accepté
+ - Mot 'b': Refusé
+ - Mot 'aa': Accepté
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Accepté
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+============================================================
+FIN DU RAPPORT

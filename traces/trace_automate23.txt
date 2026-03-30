@@ -1,0 +1,198 @@
+Fichier 'tests\automate23.txt' chargé (Alphabet de base : 4 lettres).
+============================================================
+       RAPPORT COMPLET : AUTOMATE N°23
+============================================================
+
+### 0. ÉTAT INITIAL
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+S   0 | -- | -- | -- | 0  | 
+E   1 | 2  | -- | -- | -- | 
+    2 | 2  | 3  | -- | -- | 
+    3 | -- | 3  | 4  | -- | 
+    4 | -- | -- | 4  | 0  | 
+=============================
+
+Propriétés :
+ - Déterministe : True
+ - Standard     : True
+ - Complet      : False
+ - Asynchrone   : False
+
+### 1. TESTS DE RECONNAISSANCE (ORIGINE)
+ - Mot '£': Refusé
+ - Mot 'a': Refusé
+ - Mot 'b': Refusé
+ - Mot 'aa': Refusé
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Refusé
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+### 2. STANDARDISATION
+Fichier 'tests\automate23.txt' chargé (Alphabet de base : 4 lettres).
+L'automate est déjà STANDARD. Opération annulée.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+S   0 | -- | -- | -- | 0  | 
+E   1 | 2  | -- | -- | -- | 
+    2 | 2  | 3  | -- | -- | 
+    3 | -- | 3  | 4  | -- | 
+    4 | -- | -- | 4  | 0  | 
+=============================
+
+
+### 3. DÉTERMINISATION
+
+L'automate est déjà DÉTERMINISTE.
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 0 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'd'
+- État 2 n'a pas de transition pour 'd'
+- État 3 n'a pas de transition pour 'a'
+- État 3 n'a pas de transition pour 'd'
+- État 4 n'a pas de transition pour 'a'
+- État 4 n'a pas de transition pour 'b'
+
+L'automate n'est PAS COMPLET :
+- État 0 n'a pas de transition pour 'a'
+- État 0 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'b'
+- État 1 n'a pas de transition pour 'd'
+- État 2 n'a pas de transition pour 'd'
+- État 3 n'a pas de transition pour 'a'
+- État 3 n'a pas de transition pour 'd'
+- État 4 n'a pas de transition pour 'a'
+- État 4 n'a pas de transition pour 'b'
+État poubelle 5 ajouté.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+S   0 | 5  | 5  | 5  | 0  | 
+E   1 | 2  | 5  | 5  | 5  | 
+    2 | 2  | 3  | 5  | 5  | 
+    3 | 5  | 3  | 4  | 5  | 
+    4 | 5  | 5  | 4  | 0  | 
+    5 | 5  | 5  | 5  | 5  | 
+=============================
+
+
+### 4. COMPLÉTION
+L'automate est déjà complet.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+S   0 | 5  | 5  | 5  | 0  | 
+E   1 | 2  | 5  | 5  | 5  | 
+    2 | 2  | 3  | 5  | 5  | 
+    3 | 5  | 3  | 4  | 5  | 
+    4 | 5  | 5  | 4  | 0  | 
+    5 | 5  | 5  | 5  | 5  | 
+=============================
+
+
+### 5. MINIMISATION (AFD COMPLET -> AFDM)
+
+--- Phase de Minimisation (Algorithme de Moore) ---
+P0 = [NT1:[1, 2, 3, 4, 5], T1:[0]]
+
+Analyse des transitions pour P0 :
+  État 1 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 2 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 3 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 4 : (a->NT1) (b->NT1) (c->NT1) (d->T1)
+  État 5 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 0 : (a->NT1) (b->NT1) (c->NT1) (d->T1)
+P1 = [NT1:[1, 2, 3, 5], NT2:[4], T1:[0]]
+
+Analyse des transitions pour P1 :
+  État 1 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 2 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 3 : (a->NT1) (b->NT1) (c->NT2) (d->NT1)
+  État 5 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 4 : (a->NT1) (b->NT1) (c->NT2) (d->T1)
+  État 0 : (a->NT1) (b->NT1) (c->NT1) (d->T1)
+P2 = [NT1:[1, 2, 5], NT2:[3], NT3:[4], T1:[0]]
+
+Analyse des transitions pour P2 :
+  État 1 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 2 : (a->NT1) (b->NT2) (c->NT1) (d->NT1)
+  État 5 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 3 : (a->NT1) (b->NT2) (c->NT3) (d->NT1)
+  État 4 : (a->NT1) (b->NT1) (c->NT3) (d->T1)
+  État 0 : (a->NT1) (b->NT1) (c->NT1) (d->T1)
+P3 = [NT1:[1, 5], NT2:[2], NT3:[3], NT4:[4], T1:[0]]
+
+Analyse des transitions pour P3 :
+  État 1 : (a->NT2) (b->NT1) (c->NT1) (d->NT1)
+  État 5 : (a->NT1) (b->NT1) (c->NT1) (d->NT1)
+  État 2 : (a->NT2) (b->NT3) (c->NT1) (d->NT1)
+  État 3 : (a->NT1) (b->NT3) (c->NT4) (d->NT1)
+  État 4 : (a->NT1) (b->NT1) (c->NT4) (d->T1)
+  État 0 : (a->NT1) (b->NT1) (c->NT1) (d->T1)
+P4 = [NT1:[1], NT2:[5], NT3:[2], NT4:[3], NT5:[4], T1:[0]]
+
+Analyse des transitions pour P4 :
+  État 1 : (a->NT3) (b->NT2) (c->NT2) (d->NT2)
+  État 5 : (a->NT2) (b->NT2) (c->NT2) (d->NT2)
+  État 2 : (a->NT3) (b->NT4) (c->NT2) (d->NT2)
+  État 3 : (a->NT2) (b->NT4) (c->NT5) (d->NT2)
+  État 4 : (a->NT2) (b->NT2) (c->NT5) (d->T1)
+  État 0 : (a->NT2) (b->NT2) (c->NT2) (d->T1)
+
+L'automate est déjà minimal.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+S   0 | 5  | 5  | 5  | 0  | 
+E   1 | 2  | 5  | 5  | 5  | 
+    2 | 2  | 3  | 5  | 5  | 
+    3 | 5  | 3  | 4  | 5  | 
+    4 | 5  | 5  | 4  | 0  | 
+    5 | 5  | 5  | 5  | 5  | 
+=============================
+
+
+### 6. AUTOMATE COMPLÉMENTAIRE (Basé sur l'AFDM)
+
+Construction du complémentaire à partir de : AFDCM (Minimal)
+Automate complémentaire généré avec succès.
+
+==================== TABLEAU DE TRANSITION ====================
+       | a  | b  | c  | d  | 
+-----------------------------
+    0 | 5  | 5  | 5  | 0  | 
+ES  1 | 2  | 5  | 5  | 5  | 
+S   2 | 2  | 3  | 5  | 5  | 
+S   3 | 5  | 3  | 4  | 5  | 
+S   4 | 5  | 5  | 4  | 0  | 
+S   5 | 5  | 5  | 5  | 5  | 
+=============================
+
+
+### 7. TESTS DE RECONNAISSANCE (SUR AUTOMATE MINIMAL)
+ - Mot '£': Refusé
+ - Mot 'a': Refusé
+ - Mot 'b': Refusé
+ - Mot 'aa': Refusé
+ - Mot 'ab': Refusé
+ - Mot 'ba': Refusé
+ - Mot 'bb': Refusé
+ - Mot 'aaa': Refusé
+ - Mot 'aba': Refusé
+ - Mot 'baab': Refusé
+
+============================================================
+FIN DU RAPPORT
