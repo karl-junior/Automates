@@ -5,7 +5,7 @@ def menu_principal():
     while True:
         # SELECTION
         print("\n" + "═"*50)
-        choix = input("Quel automate (1-44) ou 'q' : ")
+        choix = input("Quel automate (1-45) ou 'q' : ")
         if choix.lower() == 'q': break
 
         
