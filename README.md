@@ -25,34 +25,34 @@ Le programme permet de :
 ## ⚡ Démonstration rapide ( Automate45.txt )
 
 📄 Données d’entrée (data.txt)
-ADTS
-ATS
-DATS
-ADTS
+- ADTS
+- ATS
+- DATS
+- ADTS
 
-##🧠 Règle métier
+## 🧠 Règle métier
 
 Une séquence valide doit respecter l’ordre :
 
 A → D → T → S
 
-##✅ Résultat
+## ✅ Résultat
 VALID:
-ADTS
-ADTS
+- ADTS
+- ADTS
 
 INVALID:
-ATS
-DATS
+- ATS
+- DATS
 
-##💡 Interprétation
+## 💡 Interprétation
 ADTS → séquence correcte
 ATS → étape manquante
 DATS → ordre incorrect
 
 L’automate agit ici comme un filtre de qualité des données.
 
-##🧩 Structure du projet
+## 🧩 Structure du projet
 
 L’automate est représenté avec :
 
@@ -74,7 +74,7 @@ Un automate permet de :
 
 Exemple : vérifier qu’un processus métier respecte un ordre précis.
 
-- 🚀 Perspectives
+## 🚀 Perspectives
 
 Ce projet peut être étendu avec :
 
@@ -82,7 +82,8 @@ Ce projet peut être étendu avec :
 - minimisation
 - complétion
 - intégration dans un pipeline de traitement de données
-##👨‍💻 Auteur
+
+## 👨‍💻 Auteur
 
 - Tiffany VONGCHANH
 - Karl junior FEKOUA
