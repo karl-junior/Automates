@@ -1,87 +1,122 @@
-# Automata Simulator — Projet d’Automates Finis
+# 🧠 Automate Fini — Projet Scolaire
 
 ## 📚 Contexte
-Ce projet a été réalisé dans le cadre d’un cours de mathematiques sur les automates finis.
 
-L’objectif est de concevoir un programme capable de :
+Ce projet a été réalisé dans le cadre d’un cours d’informatique sur les **automates finis**.
 
-- lire un automate depuis un fichier
-- analyser ses propriétés
-- manipuler ses transitions
-- reconnaître des mots
+L’objectif est de développer un programme en Python permettant de lire, analyser et transformer des automates à partir de fichiers texte, en appliquant les concepts fondamentaux de la théorie des langages formels.
 
-Au-delà de l’aspect académique, ce projet illustre comment un automate peut être utilisé dans des situations concrètes, notamment pour valider des données séquentielles. 
+---
 
-## ⚙️ Fonctinnalités
+## ⚙️ Fonctionnalités
 
 Le programme permet de :
 
-- Lire un automate depuis un fichier .txt
-- Vérifier si un automate est : déterministe, complet
-- Manipuler les transitions sous forme structurée
-- Tester la reconnaissance de mots
-- Utiliser l’automate comme validateur de séquences
+### 📥 Lecture et représentation
 
-## ⚡ Démonstration rapide ( Automate45.txt )
+* Lire un automate depuis un fichier `.txt`
+* Gérer :
 
-📄 Données d’entrée (data.txt)
-- ADTS
-- ATS
-- DATS
-- ADTS
+  * les états
+  * les états initiaux et finaux
+  * les transitions
+  * les epsilon-transitions (`£`)
 
-## 🧠 Règle métier
+---
 
-Une séquence valide doit respecter l’ordre :
+### 🔍 Analyse des automates
 
-A → D → T → S
+* Vérifier si un automate est :
 
-## ✅ Résultat
-VALID:
-- ADTS
-- ADTS
+  * déterministe
+  * complet
+  * standard
+  * minimal
 
-INVALID:
-- ATS
-- DATS
+---
 
-## 💡 Interprétation
-ADTS → séquence correcte
-ATS → étape manquante
-DATS → ordre incorrect
+### 🔁 Transformations
 
-L’automate agit ici comme un filtre de qualité des données.
+* Déterminisation (méthode des sous-ensembles)
+* Complétion (ajout d’un état poubelle)
+* Standardisation
+* Complémentaire
+* Minimisation (algorithme de Moore)
 
-## 🧩 Structure du projet
+---
 
-L’automate est représenté avec :
+### 🧪 Simulation
 
-des états (entiers)
-un alphabet
-des transitions sous forme de dictionnaire :
+* Reconnaissance de mots
+* Gestion des epsilon-transitions via fermeture transitive
+
+---
+
+## 🧩 Format du fichier d’entrée
+
+Un automate est défini dans un fichier texte structuré comme suit :
+
+```text
+nombre_de_symboles
+nombre_d_etats
+nombre_etats_initiaux etats_initiaux...
+nombre_etats_finaux etats_finaux...
+nombre_de_transitions
+etat_depart symbole etat_arrivee
+...
+```
+
+### Exemple :
+
+```text
+2
+3
+1 0
+1 2
+3
+0 a 1
+1 b 2
+2 a 2
+```
+
+---
+
+## 🧠 Représentation interne
+
+Les transitions sont stockées sous forme de dictionnaire Python :
+
+```python
 {
     (etat, symbole): [liste des états suivants]
 }
-Cas d’usage : Qualité des données
+```
 
-Dans des systèmes réels, les données suivent souvent des séquences logiques (logs, événements, parcours utilisateur…).
+---
 
-Un automate permet de :
+## 🚀 Objectif pédagogique
 
-- détecter des incohérences
-- valider la structure des données
-- éviter des erreurs dans les traitements en aval (analyse, machine learning…)
+Ce projet permet de :
 
-Exemple : vérifier qu’un processus métier respecte un ordre précis.
+* comprendre en profondeur le fonctionnement des automates finis
+* implémenter des algorithmes classiques (déterminisation, minimisation…)
+* manipuler des structures de données complexes
+* appliquer des concepts de théorie des langages en Python
 
-## 🚀 Perspectives
+---
 
-Ce projet peut être étendu avec :
+## 🔮 Extensions possibles
 
-- déterminisation d’automates
-- minimisation
-- complétion
-- intégration dans un pipeline de traitement de données
+* Interface graphique
+* Visualisation des automates (graphes)
+* Intégration dans des pipelines de traitement de données
+* Optimisation des performances
+
+---
+
+## 👨‍💻 Auteur
+
+Projet réalisé dans un cadre académique (école d’ingénieur).
+
 
 ## 👨‍💻 Auteur
 
